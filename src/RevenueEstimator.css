@@ -35,6 +35,28 @@
   gap: 24px;
 }
 
+.estimator-page .home-link {
+  width: 100%;
+  max-width: 600px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  background: transparent;
+  border: 0;
+  color: var(--teal);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  opacity: 0.6;
+  transition: opacity 0.15s ease, gap 0.15s ease;
+}
+.estimator-page .home-link:hover { opacity: 1; gap: 14px; }
+.estimator-page .home-link svg { width: 12px; height: 12px; }
+
 .estimator-page .brand {
   text-align: center;
   display: flex;

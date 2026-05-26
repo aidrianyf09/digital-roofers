@@ -460,6 +460,9 @@ export default function RevenueEstimator() {
     <div className="estimator-page">
       <div className="gold-rule" />
       <div className="app">
+        <Link to="/" className="home-link">
+          <ArrowLeft /> Back to home
+        </Link>
         <div className="brand">
           <Link to="/" className="brand-mark">
             <span className="name">
