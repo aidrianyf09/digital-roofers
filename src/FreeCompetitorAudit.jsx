@@ -78,7 +78,7 @@ export default function FreeCompetitorAudit() {
           </a>
           <div className="nav-desktop nav-links">
             <a className="nav-link" href="#services">Services</a>
-            <a className="nav-link" href="#claim">Free Audit</a>
+            <Link className="nav-link" to="/free-audit">Free Audit</Link>
             <a className="nav-link" href="#footer">Contact</a>
             <Link
               className="cta cta-sm"
@@ -104,7 +104,7 @@ export default function FreeCompetitorAudit() {
         </div>
         <div className={`nav-mobile${mobileOpen ? ' is-open' : ''}`} id="navMobile">
           <a className="nav-link" href="#services" onClick={closeMobile}>Services</a>
-          <a className="nav-link" href="#claim" onClick={closeMobile}>Free Audit</a>
+          <Link className="nav-link" to="/free-audit" onClick={closeMobile}>Free Audit</Link>
           <a className="nav-link" href="#footer" onClick={closeMobile}>Contact</a>
           <div style={{ height: 8 }}></div>
           <Link
@@ -674,7 +674,7 @@ export default function FreeCompetitorAudit() {
               <ul className="quick-links">
                 <li><a href="#">Home</a></li>
                 <li><a href="#services">Services</a></li>
-                <li><a href="#claim">Free Audit</a></li>
+                <li><Link to="/free-audit">Free Audit</Link></li>
                 <li><a href={`mailto:${EMAIL}`}>Email</a></li>
               </ul>
             </div>
