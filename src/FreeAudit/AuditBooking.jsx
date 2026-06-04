@@ -4,7 +4,16 @@ import { InlineWidget } from 'react-calendly';
 // REPLACE: Swap this URL with Edrian's actual Calendly booking link
 const CALENDLY_URL = 'https://calendly.com/digitalroofers/free-audit';
 
-const AuditBooking = forwardRef(function AuditBooking(_props, ref) {
+const PLATFORM_LABELS = {
+  google: 'Google Ads',
+  meta: 'Meta Ads',
+  both: 'Both Channels',
+};
+
+const AuditBooking = forwardRef(function AuditBooking(
+  { selected, onChangeClick },
+  ref
+) {
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
@@ -16,6 +25,10 @@ const AuditBooking = forwardRef(function AuditBooking(_props, ref) {
     }, 6000);
     return () => clearTimeout(t);
   }, []);
+
+  const url = selected
+    ? `${CALENDLY_URL}?utm_content=${selected}`
+    : CALENDLY_URL;
 
   return (
     <section ref={ref} id="booking" className="audit-booking">
@@ -34,10 +47,28 @@ const AuditBooking = forwardRef(function AuditBooking(_props, ref) {
           </p>
         </header>
 
+        {selected && (
+          <div className="audit-picked-chip-wrap r-up">
+            <div className="audit-picked-chip">
+              <span className="audit-picked-chip-dot" aria-hidden="true" />
+              <span>
+                You picked: <strong>{PLATFORM_LABELS[selected]}</strong>
+              </span>
+              <button
+                type="button"
+                className="audit-picked-chip-change"
+                onClick={onChangeClick}
+              >
+                Change
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="audit-calendly-wrap r-up d3" id="calendly-mount">
           {!failed && (
             <InlineWidget
-              url={CALENDLY_URL}
+              url={url}
               styles={{ height: '700px', width: '100%' }}
               pageSettings={{
                 backgroundColor: 'ffffff',

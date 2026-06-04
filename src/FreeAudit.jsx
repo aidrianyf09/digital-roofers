@@ -4,6 +4,7 @@ import './FreeCompetitorAudit.css';
 import './FreeAudit.css';
 import AuditHero from './FreeAudit/AuditHero.jsx';
 import AuditSteps from './FreeAudit/AuditSteps.jsx';
+import AuditPlatformPicker from './FreeAudit/AuditPlatformPicker.jsx';
 import AuditBooking from './FreeAudit/AuditBooking.jsx';
 import AuditChecklist from './FreeAudit/AuditChecklist.jsx';
 import AuditTestimonials from './FreeAudit/AuditTestimonials.jsx';
@@ -17,6 +18,8 @@ export default function FreeAudit() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [selectedPlatform, setSelectedPlatform] = useState(null);
+  const pickerRef = useRef(null);
   const bookingRef = useRef(null);
 
   useEffect(() => {
@@ -52,10 +55,19 @@ export default function FreeAudit() {
 
   const closeMobile = () => setMobileOpen(false);
 
+  const scrollToPicker = () => {
+    if (!pickerRef.current) return;
+    pickerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   const scrollToBooking = () => {
     if (!bookingRef.current) return;
     bookingRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
+
+  useEffect(() => {
+    if (selectedPlatform) scrollToBooking();
+  }, [selectedPlatform]);
 
   const navClass = [
     'nav',
@@ -114,13 +126,22 @@ export default function FreeAudit() {
 
       {/* =================== SECTIONS =================== */}
       <main className="audit-main">
-        <AuditHero onBookClick={scrollToBooking} />
+        <AuditHero onBookClick={scrollToPicker} />
         <AuditSteps />
-        <AuditBooking ref={bookingRef} />
+        <AuditPlatformPicker
+          ref={pickerRef}
+          selected={selectedPlatform}
+          onSelect={setSelectedPlatform}
+        />
+        <AuditBooking
+          ref={bookingRef}
+          selected={selectedPlatform}
+          onChangeClick={scrollToPicker}
+        />
         <AuditChecklist />
         <AuditTestimonials />
         <AuditFAQ />
-        <AuditFinalCTA onBookClick={scrollToBooking} />
+        <AuditFinalCTA onBookClick={scrollToPicker} />
       </main>
 
       {/* =================== FOOTER =================== */}

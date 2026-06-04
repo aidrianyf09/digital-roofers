@@ -570,3 +570,170 @@
     transform: none;
   }
 }
+
+/* =================== PLATFORM PICKER (STEP 2) =================== */
+.audit-picker {
+  background: var(--cream);
+  padding: 96px 0;
+}
+.audit-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+.audit-picker-card {
+  position: relative;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: var(--ink-deep);
+  min-height: 280px;
+}
+.audit-picker-card-shadow {
+  position: absolute;
+  inset: 0;
+  background: var(--ink-deep);
+  border-radius: 6px;
+  transform: translate(8px, 8px);
+  transition: transform var(--dur-3) var(--ease-out-quart),
+    background var(--dur-3) var(--ease-out-quart);
+}
+.audit-picker-card-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: 100%;
+  padding: 32px;
+  background: var(--bone);
+  border: 2px solid var(--ink-deep);
+  border-radius: 6px;
+  transition: transform var(--dur-3) var(--ease-out-quart),
+    background var(--dur-3) var(--ease-out-quart),
+    color var(--dur-3) var(--ease-out-quart);
+}
+.audit-picker-glyph {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 40px;
+  line-height: 1;
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--ink-deep);
+  border-radius: 4px;
+  background: var(--yellow);
+  transition: background var(--dur-3) var(--ease-out-quart),
+    color var(--dur-3) var(--ease-out-quart),
+    border-color var(--dur-3) var(--ease-out-quart);
+}
+.audit-picker-name {
+  font-size: 28px;
+  line-height: 1.05;
+}
+.audit-picker-blurb {
+  font-size: 15px;
+  opacity: 0.82;
+  flex: 1;
+}
+.audit-picker-check {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding-top: 12px;
+  border-top: 1px dashed currentColor;
+  opacity: 0.7;
+}
+
+.audit-picker-card:hover .audit-picker-card-inner {
+  transform: translate(-6px, -6px);
+}
+.audit-picker-card:hover .audit-picker-card-shadow {
+  transform: translate(14px, 14px);
+}
+.audit-picker-card:focus-visible .audit-picker-card-inner {
+  outline: 3px solid var(--yellow);
+  outline-offset: 4px;
+}
+
+.audit-picker-card.is-active .audit-picker-card-inner {
+  background: var(--teal);
+  color: var(--cream);
+  transform: translate(-4px, -4px);
+}
+.audit-picker-card.is-active .audit-picker-card-shadow {
+  background: var(--yellow);
+  transform: translate(10px, 10px);
+}
+.audit-picker-card.is-active .audit-picker-glyph {
+  background: var(--yellow);
+  color: var(--ink-deep);
+  border-color: var(--yellow);
+}
+.audit-picker-card.is-active .audit-picker-check {
+  opacity: 1;
+  color: var(--yellow);
+}
+
+@media (max-width: 820px) {
+  .audit-picker-grid {
+    grid-template-columns: 1fr;
+  }
+  .audit-picker {
+    padding: 64px 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .audit-picker-card-inner,
+  .audit-picker-card-shadow,
+  .audit-picker-glyph {
+    transition: none;
+  }
+  .audit-picker-card:hover .audit-picker-card-inner,
+  .audit-picker-card:hover .audit-picker-card-shadow {
+    transform: none;
+  }
+}
+
+/* =================== CONFIRMATION CHIP (above Calendly) =================== */
+.audit-picked-chip-wrap {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.audit-picked-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(244, 236, 220, 0.08);
+  color: var(--cream);
+  border: 1px solid var(--cream);
+  border-radius: 999px;
+}
+.audit-picked-chip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--yellow);
+}
+.audit-picked-chip-change {
+  background: none;
+  border: 0;
+  color: var(--yellow);
+  cursor: pointer;
+  font: inherit;
+  text-transform: uppercase;
+  text-decoration: underline;
+  padding: 0 0 0 6px;
+}
+.audit-picked-chip-change:hover {
+  color: var(--cream);
+}
