@@ -1,8 +1,7 @@
 import { forwardRef, useState, useEffect } from 'react';
 import { InlineWidget } from 'react-calendly';
 
-// REPLACE: Swap this URL with Edrian's actual Calendly booking link
-const CALENDLY_URL = 'https://calendly.com/digitalroofers/free-audit';
+const CALENDLY_URL = 'https://calendly.com/office-strongbrandsunited/30min';
 
 const PLATFORM_LABELS = {
   google: 'Google Ads',

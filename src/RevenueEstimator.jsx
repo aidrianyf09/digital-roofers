@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './RevenueEstimator.css';
 import { sendLeadToGhl } from './lib/ghl-webhook';
 
-const CALENDLY_URL = 'https://calendly.com/strongbrandsunited';
+const CALENDLY_URL = 'https://calendly.com/office-strongbrandsunited/30min';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^[+()\-\s\d]{7,}$/;
