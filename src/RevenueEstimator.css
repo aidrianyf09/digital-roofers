@@ -384,6 +384,47 @@
   display: block;
 }
 
+.estimator-page .contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 14px;
+}
+.estimator-page .contact-field { display: flex; flex-direction: column; gap: 4px; }
+.estimator-page .contact-field-full { grid-column: 1 / -1; }
+.estimator-page .contact-input {
+  width: 100%;
+  border: 0;
+  border-bottom: var(--border-w) solid var(--teal);
+  padding: 10px 0 10px;
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--teal);
+  background: transparent;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.estimator-page .contact-input::placeholder { color: var(--teal); opacity: 0.35; font-weight: 500; }
+.estimator-page .contact-input:focus {
+  border-bottom-color: var(--teal);
+  box-shadow: 0 var(--border-w) 0 0 var(--teal);
+}
+.estimator-page .input-optional {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  opacity: 0.5;
+  margin-left: 4px;
+}
+.estimator-page .btn-gold .spin {
+  border-color: rgba(244, 233, 215, 0.35);
+  border-top-color: var(--cream);
+}
+@media (max-width: 480px) {
+  .estimator-page .contact-grid { grid-template-columns: 1fr; }
+}
+
 .estimator-page .back-btn {
   margin-top: 18px;
   display: inline-flex;
