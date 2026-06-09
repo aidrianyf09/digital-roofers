@@ -39,17 +39,21 @@
     text-decoration: none;
     cursor: pointer;
     transition:
-      background var(--dur-fast) var(--ease-out-quart),
-      color var(--dur-fast) var(--ease-out-quart),
-      transform var(--dur-fast) var(--ease-out-quart),
-      box-shadow var(--dur-fast) var(--ease-out-quart),
-      border-color var(--dur-fast) var(--ease-out-quart);
-    will-change: transform;
+      transform var(--dur-fast) var(--ease-out),
+      background var(--dur-fast) var(--ease-out),
+      box-shadow var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out);
   }
-  .dr-btn__arrow { transition: transform var(--dur-fast) var(--ease-out-quart); }
-  .dr-btn:hover { transform: translateY(-2px); }
-  .dr-btn:hover .dr-btn__arrow { transform: translateX(4px); }
-  .dr-btn:active { transform: translateY(0); }
+  .dr-btn__arrow { transition: transform var(--dur-fast) var(--ease-out); }
+  @media (hover: hover) and (pointer: fine) {
+    .dr-btn:hover { transform: translateY(-2px); }
+    .dr-btn:hover .dr-btn__arrow { transform: translateX(4px); }
+  }
+  .dr-btn:active {
+    transform: scale(0.97);
+    transition-duration: var(--dur-press);
+  }
   .dr-btn--sm { padding: 8px 16px; font-size: 14px; }
   .dr-btn--md { padding: 12px 22px; font-size: 15px; }
   .dr-btn--lg { padding: 16px 28px; font-size: 16px; }

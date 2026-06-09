@@ -279,10 +279,14 @@
   @media (max-width: 880px) {
     .dr-svc-card.is-wide { grid-column: span 1; }
   }
-  .dr-svc-card:hover {
-    border-color: var(--brand-sapphire);
-    box-shadow: var(--shadow-lifted);
-    transform: translateY(-4px);
+  @media (hover: hover) and (pointer: fine) {
+    .dr-svc-card:hover {
+      border-color: var(--brand-sapphire);
+      box-shadow: var(--shadow-lifted);
+      transform: translateY(-4px);
+    }
+    .dr-svc-card:hover .dr-svc-card__icon { color: var(--brand-teal); }
+    .dr-svc-card:hover .dr-svc-card__arrow { color: var(--brand-sapphire); transform: translate(3px, -3px); }
   }
   .dr-svc-card__image { width: 100%; }
   .dr-svc-card__image .dr-image-plate { border-radius: 0; box-shadow: none; }
@@ -297,8 +301,7 @@
     color: var(--ink-muted);
   }
   .dr-svc-card__sep { color: var(--border-strong); }
-  .dr-svc-card__icon { color: var(--brand-sapphire); transition: color var(--dur-fast) var(--ease-out-quart); }
-  .dr-svc-card:hover .dr-svc-card__icon { color: var(--brand-teal); }
+  .dr-svc-card__icon { color: var(--brand-sapphire); transition: color var(--dur-fast) var(--ease-out); }
   .dr-svc-card__name {
     font-family: var(--font-display);
     font-weight: 600;
@@ -317,9 +320,8 @@
   }
   .dr-svc-card__arrow {
     color: var(--ink-muted);
-    transition: color var(--dur-fast) var(--ease-out-quart), transform var(--dur-fast) var(--ease-out-quart);
+    transition: color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
   }
-  .dr-svc-card:hover .dr-svc-card__arrow { color: var(--brand-sapphire); transform: translate(3px, -3px); }
 
   /* ============================================================
      ThreeColumns

@@ -411,9 +411,11 @@
     box-shadow: var(--shadow-flat);
     transition: box-shadow var(--dur-base) var(--ease-out-quart), transform var(--dur-base) var(--ease-out-quart);
   }
-  .dr-fa-quote-card:hover {
-    box-shadow: var(--shadow-raised);
-    transform: translateY(-3px);
+  @media (hover: hover) and (pointer: fine) {
+    .dr-fa-quote-card:hover {
+      box-shadow: var(--shadow-raised);
+      transform: translateY(-3px);
+    }
   }
   .dr-fa-quote-card__mark { color: var(--brand-sapphire); opacity: 0.6; }
   .dr-fa-quote-card__body {

@@ -34,8 +34,8 @@ export default function Hero() {
         <div className="dr-hero__copy">
           <motion.span
             className="dr-hero__eyebrow"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, transform: 'translateY(12px)' }}
+            animate={{ opacity: 1, transform: 'translateY(0px)' }}
             transition={{ duration: dur.base, ease: ease.outExpo }}
           >
             Digital Roofers <span className="dr-hero__eyebrow-sep">/</span> By SBU
@@ -64,8 +64,8 @@ export default function Hero() {
 
           <motion.p
             className="dr-hero__sub"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, transform: 'translateY(12px)' }}
+            animate={{ opacity: 1, transform: 'translateY(0px)' }}
             transition={{ duration: dur.base, ease: ease.outExpo, delay: 0.6 }}
           >
             Marketing that actually moves the needle for Florida roofers.
@@ -74,8 +74,8 @@ export default function Hero() {
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, transform: 'translateY(12px)' }}
+            animate={{ opacity: 1, transform: 'translateY(0px)' }}
             transition={{ duration: dur.base, ease: ease.outExpo, delay: 0.75 }}
             className="dr-hero__cta"
           >
@@ -90,8 +90,8 @@ export default function Hero() {
 
         <motion.aside
           className="dr-hero__visual"
-          initial={{ opacity: 0, y: 32 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, transform: 'translateY(32px)' }}
+          animate={{ opacity: 1, transform: 'translateY(0px)' }}
           transition={{ duration: dur.slow, ease: ease.outExpo, delay: 0.35 }}
         >
           <AIImagePlate

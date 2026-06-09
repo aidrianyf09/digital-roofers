@@ -5,13 +5,13 @@ import { motion, useMotionValue, useSpring, useReducedMotion } from 'motion/reac
  * Wraps a child element with pointer-tracked translate within a 60px radius.
  * Falls back to a static wrapper when reduce-motion is preferred.
  */
-export default function MagneticCTA({ children, strength = 0.35, radius = 80, className = '' }) {
+export default function MagneticCTA({ children, strength = 0.35, radius = 120, className = '' }) {
   const ref = useRef(null);
   const reduced = useReducedMotion();
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const sx = useSpring(x, { stiffness: 220, damping: 22 });
-  const sy = useSpring(y, { stiffness: 220, damping: 22 });
+  const sx = useSpring(x, { duration: 0.5, bounce: 0.15 });
+  const sy = useSpring(y, { duration: 0.5, bounce: 0.15 });
 
   if (reduced) {
     return <span className={className}>{children}</span>;
@@ -25,12 +25,11 @@ export default function MagneticCTA({ children, strength = 0.35, radius = 80, cl
     const dx = e.clientX - cx;
     const dy = e.clientY - cy;
     const dist = Math.hypot(dx, dy);
-    if (dist > radius) {
-      x.set(0); y.set(0);
-      return;
-    }
-    x.set(dx * strength);
-    y.set(dy * strength);
+    // Smoothly attenuate displacement based on distance to the magnetic radius.
+    // dist = 0 -> full strength, dist >= radius -> zero. No snap-to-zero jump.
+    const attenuation = Math.max(0, 1 - dist / radius);
+    x.set(dx * strength * attenuation);
+    y.set(dy * strength * attenuation);
   };
 
   const onLeave = () => { x.set(0); y.set(0); };

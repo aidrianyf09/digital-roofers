@@ -73,7 +73,9 @@
     /* ===== Motion ===== */
     --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
     --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    --ease-out:       cubic-bezier(0.23, 1, 0.32, 1); /* stronger, used on press/interactive */
     --ease-spring:    cubic-bezier(0.5, 1.5, 0.7, 1);
+    --dur-press: 100ms;
     --dur-fast: 160ms;
     --dur-base: 320ms;
     --dur-slow: 640ms;
