@@ -19,10 +19,24 @@
 
   /* ============================================================
      WordReveal text wrapping (used in Hero + FinalCTA)
+     padding-bottom + negative margin-bottom give descenders (g, j, p, q, y)
+     room to render without affecting layout — clip mask still works.
      ============================================================ */
-  .dr-word-reveal__word { display: inline-block; overflow: hidden; vertical-align: bottom; }
+  .dr-word-reveal__word {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    padding-bottom: 0.18em;
+    margin-bottom: -0.12em;
+  }
   .dr-word-reveal__inner { display: inline-block; will-change: transform; }
-  .dr-word-reveal__letter-wrap { display: inline-block; overflow: hidden; vertical-align: bottom; }
+  .dr-word-reveal__letter-wrap {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    padding-bottom: 0.18em;
+    margin-bottom: -0.12em;
+  }
   .dr-word-reveal__letter { display: inline-block; will-change: transform; }
 
   /* ============================================================
@@ -113,9 +127,9 @@
   .dr-hero__h1 {
     font-family: var(--font-display);
     font-weight: 900;
-    font-size: clamp(48px, 9vw, 132px);
-    line-height: 0.95;
-    letter-spacing: -0.03em;
+    font-size: clamp(40px, 5vw, 72px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
     color: var(--brand-charcoal);
     margin: 0;
   }
