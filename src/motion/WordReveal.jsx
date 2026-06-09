@@ -59,7 +59,6 @@ export default function WordReveal({
                     </span>
                   ))}
                 </Wrap>
-                {i < words.length - 1 && ' '}
               </span>
             );
           }
@@ -71,7 +70,6 @@ export default function WordReveal({
                   {w}
                 </motion.span>
               </Wrap>
-              {i < words.length - 1 && ' '}
             </span>
           );
         })}
