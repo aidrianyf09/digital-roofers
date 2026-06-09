@@ -41,15 +41,26 @@ export default function Hero() {
             Digital Roofers <span className="dr-hero__eyebrow-sep">/</span> By SBU
           </motion.span>
 
-          <WordReveal
-            text="Stop Chasing Leads. Start Closing Roofs."
-            as="h1"
-            className="dr-hero__h1"
-            highlight="Roofs."
-            mode="letters"
-            stagger={0.05}
-            delay={0.1}
-          />
+          <h1 className="dr-hero__h1">
+            <span className="dr-hero__h1-line">
+              <WordReveal
+                text="Stop Chasing Leads."
+                as="span"
+                stagger={0.05}
+                delay={0.1}
+              />
+            </span>
+            <span className="dr-hero__h1-line">
+              <WordReveal
+                text="Start Closing Roofs."
+                as="span"
+                highlight="Roofs."
+                mode="letters"
+                stagger={0.05}
+                delay={0.45}
+              />
+            </span>
+          </h1>
 
           <motion.p
             className="dr-hero__sub"
