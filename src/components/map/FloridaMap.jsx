@@ -6,43 +6,37 @@ import { ease, dur } from '../../motion/motion-config.js';
 
 /**
  * Stylized SVG outline of Florida with 6 clickable city pins.
- * Each pin navigates to /<citySlug>. Pins gain a Teal ring on hover.
- * HQ marker (Tampa) renders slightly larger with a Coral signal mark.
+ * Pins navigate to /<citySlug>. Hover/focus shows a Teal ring.
+ * HQ marker (Tampa) renders slightly larger with a Coral signal mark
+ * echoing the brand-kit logo's antenna.
+ *
+ * Hit areas are 22px-radius transparent circles for WCAG 2.5.5 compliance —
+ * the visible dot stays small but the touch surface is ~44px diameter.
  */
-const FLORIDA_PATH =
-  // Hand-drawn simplified outline. Panhandle top-left across to peninsula,
-  // peninsula down through Miami, back up the gulf coast.
-  'M 30 60 ' +
-  'L 120 50 ' +
-  'L 200 55 ' +
-  'L 245 60 ' +
-  'L 280 65 ' +
-  'L 290 80 ' +
-  'L 295 105 ' +
-  'L 300 130 ' +
-  'L 305 160 ' +
-  'L 305 195 ' +
-  'L 300 225 ' +
-  'L 295 250 ' +
-  'L 285 265 ' +
-  'L 270 270 ' +
-  'L 255 263 ' +
-  'L 245 245 ' +
-  'L 240 220 ' +
-  'L 232 205 ' +
-  'L 220 192 ' +
-  'L 210 185 ' +
-  'L 200 175 ' +
-  'L 190 162 ' +
-  'L 180 148 ' +
-  'L 168 138 ' +
-  'L 152 128 ' +
-  'L 132 118 ' +
-  'L 108 108 ' +
-  'L 82 95 ' +
-  'L 58 82 ' +
-  'L 38 72 ' +
-  'Z';
+
+// Stylized Florida outline. ~35 anchor points, traced clockwise from
+// Pensacola along the Gulf coast, around the southern tip, up the Atlantic,
+// across the Georgia line, back to Pensacola.
+const FLORIDA_PATH = [
+  'M 15 70',
+  // Panhandle south coast, west to east
+  'L 35 67 L 70 68 L 105 75 L 125 82',
+  // Big Bend, curving down to peninsula
+  'L 140 95 L 155 108 L 170 118 L 180 130',
+  // Gulf coast — Tampa Bay area indents slightly
+  'L 188 145 L 198 155 L 200 163 L 205 170 L 213 178 L 218 190',
+  // Continuing south down the gulf
+  'L 230 215 L 242 230 L 252 245',
+  // Cape Sable, around the southern tip
+  'L 268 260 L 285 262',
+  // Up the Atlantic coast
+  'L 295 245 L 298 225 L 303 205 L 308 180 L 312 158',
+  // Cape Canaveral bump, north Atlantic coast
+  'L 308 140 L 302 118 L 295 95 L 285 75',
+  // Georgia line, east to west across north Florida
+  'L 230 67 L 195 63 L 158 60 L 125 58 L 85 58 L 50 60 L 18 65',
+  'Z',
+].join(' ');
 
 export default function FloridaMap() {
   const reduced = useReducedMotion();
@@ -55,7 +49,6 @@ export default function FloridaMap() {
         xmlns="http://www.w3.org/2000/svg"
         className="dr-map__svg"
         aria-label="Florida service area map"
-        role="img"
         initial={reduced ? false : { opacity: 0 }}
         animate={reduced ? false : { opacity: 1 }}
         transition={{ duration: dur.slow, ease: ease.outExpo, delay: 0.3 }}
@@ -72,13 +65,11 @@ export default function FloridaMap() {
           transition={{ duration: 1.8, ease: ease.outExpo, delay: 0.4 }}
         />
 
-        {/* Tampa Bay subtle indent (decorative) */}
-        <circle cx="208" cy="172" r="3" fill="var(--surface)" opacity="0.5" />
-
         {/* City pins */}
         {CITIES.map((city, i) => {
           const isHovered = hoveredId === city.slug;
           const isHQ = city.hq;
+          const labelLeft = city.labelSide === 'left';
           return (
             <Link
               key={city.slug}
@@ -90,7 +81,15 @@ export default function FloridaMap() {
               onBlur={() => setHoveredId(null)}
             >
               <g className="dr-map__pin">
-                {/* Outer ring (appears on hover/focus) */}
+                {/* Invisible 22px hit area — WCAG 2.5.5 compliance.
+                    Click anywhere within ~44px diameter to navigate. */}
+                <circle
+                  cx={city.coords.x}
+                  cy={city.coords.y}
+                  r="22"
+                  fill="transparent"
+                />
+                {/* Outer hover/focus ring */}
                 <motion.circle
                   cx={city.coords.x}
                   cy={city.coords.y}
@@ -121,7 +120,7 @@ export default function FloridaMap() {
                   }}
                   style={{ transformOrigin: `${city.coords.x}px ${city.coords.y}px` }}
                 />
-                {/* HQ signal mark — small Coral arc above Tampa */}
+                {/* HQ signal arc */}
                 {isHQ && (
                   <motion.path
                     d={`M ${city.coords.x - 5} ${city.coords.y - 9} Q ${city.coords.x} ${city.coords.y - 14} ${city.coords.x + 5} ${city.coords.y - 9}`}
@@ -136,8 +135,9 @@ export default function FloridaMap() {
                 )}
                 {/* City label */}
                 <motion.text
-                  x={city.coords.x + (isHQ ? 14 : 12)}
+                  x={city.coords.x + (labelLeft ? -(isHQ ? 14 : 12) : (isHQ ? 14 : 12))}
                   y={city.coords.y + 4}
+                  textAnchor={labelLeft ? 'end' : 'start'}
                   fill="var(--brand-charcoal)"
                   fontFamily="var(--font-body)"
                   fontSize="11"
@@ -152,7 +152,7 @@ export default function FloridaMap() {
                 >
                   {city.name}
                 </motion.text>
-                {/* HQ caption */}
+                {/* HQ caption under Tampa */}
                 {isHQ && (
                   <motion.text
                     x={city.coords.x + 14}
@@ -174,10 +174,7 @@ export default function FloridaMap() {
           );
         })}
       </motion.svg>
-      <p className="dr-map__hint">
-        <span className="dr-map__hint-dot" aria-hidden="true" />
-        Click your city to see how we work there.
-      </p>
+      <p className="dr-map__hint">Click your city.</p>
     </div>
   );
 }
