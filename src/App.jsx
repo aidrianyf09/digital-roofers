@@ -8,6 +8,7 @@ import PageTransition from './components/layout/PageTransition.jsx';
 import { useLenis } from './hooks/useLenis.js';
 import { AdminAuthProvider } from './admin/AdminAuth.jsx';
 import AdminLogin from './admin/AdminLogin.jsx';
+import AdminSetup from './admin/AdminSetup.jsx';
 import AdminLayout from './admin/AdminLayout.jsx';
 import AdminDashboard from './admin/AdminDashboard.jsx';
 import AdminLeads from './admin/AdminLeads.jsx';
@@ -28,6 +29,7 @@ function AnimatedRoutes() {
 
         {/* Admin */}
         <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/setup" element={<AdminSetup />} />
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
           <Route path="leads" element={<AdminLeads />} />
