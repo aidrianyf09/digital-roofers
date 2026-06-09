@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   IconArrowRight, IconArrowLeft, IconClock, IconCircleCheck, IconShield,
   IconAlertTriangle, IconHome, IconCalendarEvent, IconChartBar, IconLoader2,
   IconRotateClockwise2,
 } from '@tabler/icons-react';
-import { sendLeadToGhl } from './lib/ghl-webhook';
+import { captureLead } from './lib/leads';
 import Logo from './components/layout/Logo.jsx';
 import { ease, dur } from './motion/motion-config.js';
 import CountUp from './motion/CountUp.jsx';
@@ -257,7 +257,7 @@ function TextStep({ q, value, onChange, onNext, onBack }) {
   );
 }
 
-function ContactStep({ contact, answers, onChange, onSubmit, onBack }) {
+function ContactStep({ contact, answers, attribution, onChange, onSubmit, onBack }) {
   const [submitting, setSubmitting] = useState(false);
   const firstRef = useRef(null);
   useEffect(() => { firstRef.current?.focus(); }, []);
@@ -280,7 +280,7 @@ function ContactStep({ contact, answers, onChange, onSubmit, onBack }) {
     if (!valid || submitting) return;
     setSubmitting(true);
     const estimate = computeEstimate(answers);
-    await sendLeadToGhl({ answers, estimate, contact: trimmed });
+    await captureLead({ answers, estimate, contact: trimmed, attribution });
     onSubmit();
   };
 
@@ -537,6 +537,12 @@ export default function RevenueEstimator() {
   const [contact, setContact] = useState({
     firstName: '', lastName: '', email: '', phone: '', companyName: '',
   });
+  const [searchParams] = useSearchParams();
+  const attribution = useMemo(() => ({
+    utm_source: searchParams.get('utm_source') || null,
+    utm_content: searchParams.get('utm_content') || null,
+    referrer: typeof document !== 'undefined' ? document.referrer || null : null,
+  }), [searchParams]);
 
   const totalSteps = QUESTIONS.length + 1;
   const contactStep = QUESTIONS.length + 1;
@@ -594,6 +600,7 @@ export default function RevenueEstimator() {
       <ContactStep
         contact={contact}
         answers={answers}
+        attribution={attribution}
         onChange={setContactField}
         onSubmit={() => setStep(resultStep)}
         onBack={goBack}

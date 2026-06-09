@@ -180,6 +180,7 @@ export default function DetailBlocks() {
           />
           <div className="dr-detail__body">
             <AIImagePlate
+              slot="proof/before-after"
               src="/imagery/proof/before-after.webp"
               alt="Before and after of a residential roof replacement in Florida."
               ratio="16 / 9"

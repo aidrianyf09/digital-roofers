@@ -94,6 +94,7 @@ export default function Services() {
               {s.image && (
                 <div className="dr-svc-card__image">
                   <AIImagePlate
+                    slot="services/google-ads"
                     src="/imagery/services/google-ads.webp"
                     alt="Strategist reviewing a Google Ads dashboard for a Florida roofing campaign."
                     ratio="16 / 9"

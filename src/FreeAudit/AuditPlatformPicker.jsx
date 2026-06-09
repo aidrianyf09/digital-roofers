@@ -2,6 +2,7 @@ import { forwardRef } from 'react';
 import { motion } from 'motion/react';
 import { IconBrandGoogle, IconBrandMeta, IconInfinity, IconCheck, IconArrowRight } from '@tabler/icons-react';
 import StaggerIn, { StaggerItem } from '../motion/StaggerIn.jsx';
+import { captureAuditPick } from '../lib/leads.js';
 
 const PLATFORMS = [
   { id: 'google', name: 'Google Ads', blurb: 'High-intent leads searching for a roofer right now.',  Icon: IconBrandGoogle },
@@ -10,6 +11,20 @@ const PLATFORMS = [
 ];
 
 const AuditPlatformPicker = forwardRef(function AuditPlatformPicker({ selected, onSelect }, ref) {
+  const handleSelect = (platformId) => {
+    onSelect(platformId);
+    // Fire-and-forget: track the pick in Supabase. Failure is silent.
+    const params = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+    captureAuditPick({
+      platform: platformId,
+      attribution: {
+        utm_source: params.get('utm_source') || null,
+        utm_content: params.get('utm_content') || null,
+        referrer: typeof document !== 'undefined' ? document.referrer || null : null,
+      },
+    });
+  };
+
   return (
     <section ref={ref} id="picker" className="dr-fa-picker">
       <div className="dr-container">
@@ -29,7 +44,7 @@ const AuditPlatformPicker = forwardRef(function AuditPlatformPicker({ selected, 
                   type="button"
                   className={`dr-fa-picker__card ${active ? 'is-active' : ''}`}
                   aria-pressed={active}
-                  onClick={() => onSelect(p.id)}
+                  onClick={() => handleSelect(p.id)}
                   whileHover={{ y: -4 }}
                   whileTap={{ y: 2, scale: 0.985 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 22 }}

@@ -2,19 +2,20 @@ import { useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { IconPhotoOff } from '@tabler/icons-react';
 import { ease, dur } from './motion-config.js';
+import { useImageForSlot } from '../lib/imagery.js';
 
 /**
- * Image plate. When `src` is set AND the file loads, renders the image with
- * optional Ken Burns drift. When `src` is missing OR the file fails to load
- * (e.g. the user hasn't dropped the asset in yet), renders an honest Light
- * Gray placeholder with a photo-off glyph and a screen-reader 'Image pending'
- * label.
+ * Image plate. Resolution priority for what gets rendered:
+ *   1. Admin-uploaded image at the given `slot` (Supabase).
+ *   2. The `src` prop (static path under public/imagery/).
+ *   3. Light Gray placeholder with photo-off glyph.
  *
- * This enables the drag-and-drop imagery workflow: a callsite points at a
- * convention path under /imagery/. If the user has dropped the file, image
- * appears. Otherwise the placeholder holds the slot. No JSX edits needed.
+ * Anything that 404s gracefully falls through to the next layer — no broken
+ * image icons, no JSX errors. Drop a file via the admin OR drop one into
+ * public/imagery/; whichever exists wins.
  */
 export default function AIImagePlate({
+  slot,
   src,
   alt = '',
   kenBurns = true,
@@ -25,7 +26,12 @@ export default function AIImagePlate({
 }) {
   const reduced = useReducedMotion();
   const [hasError, setHasError] = useState(false);
-  const showImage = src && !hasError;
+
+  // 1) Supabase admin upload takes priority.
+  const supaImage = useImageForSlot(slot);
+  const resolvedSrc = (supaImage?.public_url) || (!hasError ? src : null);
+  const resolvedAlt = supaImage?.alt || alt;
+  const showImage = !!resolvedSrc;
   const showKenBurns = kenBurns && !reduced && showImage;
 
   const wrapperVariants = reveal && !reduced
@@ -46,8 +52,9 @@ export default function AIImagePlate({
     >
       {showImage ? (
         <motion.img
-          src={src}
-          alt={alt}
+          key={resolvedSrc}
+          src={resolvedSrc}
+          alt={resolvedAlt}
           className="dr-image-plate__img"
           loading="lazy"
           onError={() => setHasError(true)}
