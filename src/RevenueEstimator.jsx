@@ -1,31 +1,24 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import './RevenueEstimator.css';
+import { motion, AnimatePresence } from 'motion/react';
+import {
+  IconArrowRight, IconArrowLeft, IconClock, IconCircleCheck, IconShield,
+  IconAlertTriangle, IconHome, IconCalendarEvent, IconChartBar, IconLoader2,
+  IconRotateClockwise2,
+} from '@tabler/icons-react';
 import { sendLeadToGhl } from './lib/ghl-webhook';
+import Logo from './components/layout/Logo.jsx';
+import { ease, dur } from './motion/motion-config.js';
+import CountUp from './motion/CountUp.jsx';
 
 const CALENDLY_URL = 'https://calendly.com/office-strongbrandsunited/30min';
+const AUDIT_PATH = '/free-audit';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^[+()\-\s\d]{7,}$/;
 
 /* ============================================================
-   ICONS — inline SVG
-   ============================================================ */
-const Icon = ({ d, vb = '0 0 24 24', style }) => (
-  <svg viewBox={vb} fill="currentColor" style={style} aria-hidden="true">
-    <path d={d} />
-  </svg>
-);
-const HomeIcon = (p) => <Icon {...p} d="M19 9.3V4h-3v2.6L12 3 2 12h3v8h6v-6h2v6h6v-8h3z" />;
-const ArrowRight = (p) => <Icon {...p} d="M4 11h12.17l-5.59-5.59L12 4l8 8-8 8-1.41-1.41L16.17 13H4z" />;
-const ArrowLeft = (p) => <Icon {...p} d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20z" />;
-const ClockIcon = (p) => <Icon {...p} d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm.5-13H11v6l5 3 .75-1.23L12.5 12V7z" />;
-const CheckIcon = (p) => <Icon {...p} d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-5l-3.5-3.5 1.4-1.4L11 12.2l4.6-4.6 1.4 1.4L11 15z" />;
-const ShieldIcon = (p) => <Icon {...p} d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />;
-const WarningIcon = (p) => <Icon {...p} d="M12 2 1 21h22L12 2zm0 4 7.5 13h-15L12 6zm-1 6v4h2v-4h-2zm0 5v2h2v-2h-2z" />;
-
-/* ============================================================
-   DATA
+   DATA — unchanged from V1
    ============================================================ */
 const QUESTIONS = [
   {
@@ -94,12 +87,12 @@ const QUESTIONS = [
 ];
 
 /* ============================================================
-   CALCULATION
+   CALCULATION — unchanged from V1
    ============================================================ */
 function computeEstimate(answers) {
-  const ticket = QUESTIONS[1].options.find((o) => o.value === answers.ticket) || QUESTIONS[1].options[1];
-  const leads = QUESTIONS[2].options.find((o) => o.value === answers.leads) || QUESTIONS[2].options[1];
-  const budget = QUESTIONS[3].options.find((o) => o.value === answers.budget) || QUESTIONS[3].options[2];
+  const ticket  = QUESTIONS[1].options.find((o) => o.value === answers.ticket)  || QUESTIONS[1].options[1];
+  const leads   = QUESTIONS[2].options.find((o) => o.value === answers.leads)   || QUESTIONS[2].options[1];
+  const budget  = QUESTIONS[3].options.find((o) => o.value === answers.budget)  || QUESTIONS[3].options[2];
   const service = QUESTIONS[4].options.find((o) => o.value === answers.service) || QUESTIONS[4].options[0];
 
   const newLeadsLow = Math.floor(budget.budgetLow / service.cplHigh);
@@ -130,127 +123,264 @@ function fmtMoney(n) {
 }
 
 /* ============================================================
-   COMPONENTS
+   PROGRESS RAIL
    ============================================================ */
-function ProgressBar({ step, total }) {
+function ProgressRail({ step, total }) {
   const pct = step === 0 ? 0 : Math.min(100, Math.round((step / total) * 100));
   const displayStep = Math.max(1, step);
   return (
-    <div className="progress">
-      <div className="progress-meta">
-        <span className="step">{step === 0 ? 'Get Started' : `Step ${displayStep} of ${total}`}</span>
-        <span className="pct">{pct}%</span>
+    <div className="dr-re__progress">
+      <div className="dr-re__progress-meta">
+        <span>{step === 0 ? 'Get Started' : `Step ${displayStep} of ${total}`}</span>
+        <span className="dr-tabular">{pct}%</span>
       </div>
-      <div className="progress-track">
-        <div className="progress-fill" style={{ width: pct + '%' }} />
+      <div className="dr-re__progress-track">
+        <motion.div
+          className="dr-re__progress-fill"
+          initial={false}
+          animate={{ width: pct + '%' }}
+          transition={{ duration: dur.base, ease: ease.outExpo }}
+        />
       </div>
     </div>
   );
 }
 
+/* ============================================================
+   STEP TRANSITION WRAPPER
+   ============================================================ */
+const screenVariants = {
+  initial: { opacity: 0, y: 16 },
+  enter:   { opacity: 1, y: 0, transition: { duration: dur.base, ease: ease.outExpo } },
+  exit:    { opacity: 0, y: -16, transition: { duration: dur.fast, ease: ease.outQuart } },
+};
+
+/* ============================================================
+   SCREENS
+   ============================================================ */
 function IntroScreen({ onStart }) {
   return (
-    <div className="screen">
-      <div className="intro-icon-wrap">
-        <span className="intro-icon"><HomeIcon /></span>
-      </div>
-      <div style={{ marginBottom: 14 }}>
-        <span className="eyebrow">Florida Roofing · Revenue Tool</span>
-      </div>
-      <h1 className="title">How Many Roofing Leads Could Google Ads Get You?</h1>
-      <p className="sub">
+    <motion.div className="dr-re__screen" variants={screenVariants} initial="initial" animate="enter" exit="exit">
+      <span className="dr-re__intro-icon" aria-hidden="true">
+        <IconHome size={36} stroke={1.75} />
+      </span>
+      <span className="dr-re__eyebrow">Florida Roofing · Revenue Tool</span>
+      <h1 className="dr-re__title">How Many Roofing Leads Could Google Ads Get You?</h1>
+      <p className="dr-re__sub">
         Answer 5 questions. Get your personalized revenue estimate in 60 seconds.
         <br />No fluff. Just your numbers.
       </p>
-      <div className="pills">
-        <span className="pill"><ClockIcon /> 60 seconds</span>
-        <span className="pill"><CheckIcon /> Free estimate</span>
-        <span className="pill"><ShieldIcon /> No obligation</span>
+      <div className="dr-re__pills">
+        <span className="dr-re__pill"><IconClock size={16} stroke={2} /> 60 seconds</span>
+        <span className="dr-re__pill"><IconCircleCheck size={16} stroke={2} /> Free estimate</span>
+        <span className="dr-re__pill"><IconShield size={16} stroke={2} /> No obligation</span>
       </div>
-      <button className="btn-gold" onClick={onStart}>
-        Get My Free Revenue Estimate <ArrowRight />
+      <button type="button" className="dr-re__btn-primary" onClick={onStart}>
+        Get My Free Revenue Estimate <IconArrowRight size={18} stroke={2} />
       </button>
-    </div>
+    </motion.div>
   );
 }
 
 function OptionStep({ q, value, onSelect, onBack }) {
   return (
-    <div className="screen">
-      <div className="q-head">
-        <span className="q-label">{q.label}</span>
-        <h2 className="q-title">{q.title}</h2>
-        <p className="sub sub-left">{q.sub}</p>
-      </div>
-      <div className="options">
-        {q.options.map((opt) => (
-          <button
-            key={opt.value}
-            className={'option' + (value === opt.value ? ' is-selected' : '')}
-            onClick={() => onSelect(opt.value)}
-          >
-            <span className="option-content">
-              <span className="option-label">{opt.label}</span>
-              <span className="option-desc">{opt.desc}</span>
-            </span>
-            <span className="option-arrow"><ArrowRight /></span>
-          </button>
-        ))}
+    <motion.div className="dr-re__screen" variants={screenVariants} initial="initial" animate="enter" exit="exit">
+      <header className="dr-re__q-head">
+        <span className="dr-re__q-label">{q.label}</span>
+        <h2 className="dr-re__q-title">{q.title}</h2>
+        <p className="dr-re__q-sub">{q.sub}</p>
+      </header>
+      <div className="dr-re__options">
+        {q.options.map((opt) => {
+          const isSelected = value === opt.value;
+          return (
+            <button
+              key={opt.value}
+              type="button"
+              className={`dr-re__option ${isSelected ? 'is-selected' : ''}`}
+              onClick={() => onSelect(opt.value)}
+            >
+              <span className="dr-re__option-body">
+                <span className="dr-re__option-label">{opt.label}</span>
+                <span className="dr-re__option-desc">{opt.desc}</span>
+              </span>
+              <span className="dr-re__option-arrow" aria-hidden="true">
+                <IconArrowRight size={18} stroke={2} />
+              </span>
+            </button>
+          );
+        })}
       </div>
       {onBack && (
-        <button className="back-btn" onClick={onBack}>
-          <ArrowLeft /> Back
+        <button type="button" className="dr-re__back" onClick={onBack}>
+          <IconArrowLeft size={16} stroke={2} /> Back
         </button>
       )}
-    </div>
+    </motion.div>
   );
 }
 
 function TextStep({ q, value, onChange, onNext, onBack }) {
   const inputRef = useRef(null);
-  useEffect(() => {
-    inputRef.current && inputRef.current.focus();
-  }, []);
+  useEffect(() => { inputRef.current?.focus(); }, []);
+
   const disabled = !value || value.trim().length < 2;
-  const handleKey = (e) => {
-    if (e.key === 'Enter' && !disabled) onNext();
-  };
+  const handleKey = (e) => { if (e.key === 'Enter' && !disabled) onNext(); };
+
   return (
-    <div className="screen">
-      <div className="q-head">
-        <span className="q-label">{q.label}</span>
-        <h2 className="q-title">{q.title}</h2>
-        <p className="sub sub-left">{q.sub}</p>
-      </div>
-      <label className="input-label">{q.inputLabel}</label>
+    <motion.div className="dr-re__screen" variants={screenVariants} initial="initial" animate="enter" exit="exit">
+      <header className="dr-re__q-head">
+        <span className="dr-re__q-label">{q.label}</span>
+        <h2 className="dr-re__q-title">{q.title}</h2>
+        <p className="dr-re__q-sub">{q.sub}</p>
+      </header>
+      <label className="dr-re__input-label" htmlFor="re-text">{q.inputLabel}</label>
       <input
         ref={inputRef}
+        id="re-text"
         type="text"
-        className="text-input"
+        className="dr-re__input"
         placeholder={q.placeholder}
         value={value || ''}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={handleKey}
       />
-      <div style={{ height: 24 }} />
-      <button className="btn-gold" disabled={disabled} onClick={onNext}>
-        Continue <ArrowRight />
+      <button type="button" className="dr-re__btn-primary" disabled={disabled} onClick={onNext}>
+        Continue <IconArrowRight size={18} stroke={2} />
       </button>
       {onBack && (
-        <button className="back-btn" onClick={onBack}>
-          <ArrowLeft /> Back
+        <button type="button" className="dr-re__back" onClick={onBack}>
+          <IconArrowLeft size={16} stroke={2} /> Back
         </button>
       )}
-    </div>
+    </motion.div>
   );
 }
 
-function StatCard({ value, label }) {
+function ContactStep({ contact, answers, onChange, onSubmit, onBack }) {
+  const [submitting, setSubmitting] = useState(false);
+  const firstRef = useRef(null);
+  useEffect(() => { firstRef.current?.focus(); }, []);
+
+  const trimmed = {
+    firstName:   (contact.firstName   || '').trim(),
+    lastName:    (contact.lastName    || '').trim(),
+    email:       (contact.email       || '').trim(),
+    phone:       (contact.phone       || '').trim(),
+    companyName: (contact.companyName || '').trim(),
+  };
+  const valid =
+    trimmed.firstName.length >= 1 &&
+    trimmed.lastName.length  >= 1 &&
+    EMAIL_RE.test(trimmed.email) &&
+    PHONE_RE.test(trimmed.phone);
+
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    if (!valid || submitting) return;
+    setSubmitting(true);
+    const estimate = computeEstimate(answers);
+    await sendLeadToGhl({ answers, estimate, contact: trimmed });
+    onSubmit();
+  };
+
   return (
-    <div className="stat-card">
-      <div className="v">{value}</div>
-      <div className="l">{label}</div>
-    </div>
+    <motion.form
+      className="dr-re__screen"
+      onSubmit={handleSubmit}
+      variants={screenVariants}
+      initial="initial"
+      animate="enter"
+      exit="exit"
+    >
+      <header className="dr-re__q-head">
+        <span className="dr-re__q-label">Almost there</span>
+        <h2 className="dr-re__q-title">Where should we send your estimate?</h2>
+        <p className="dr-re__q-sub">
+          Your custom revenue range is ready. Tell us where to send it and we&apos;ll unlock the
+          breakdown plus a strategy call invite.
+        </p>
+      </header>
+
+      <div className="dr-re__contact-grid">
+        <div className="dr-re__field">
+          <label className="dr-re__input-label" htmlFor="re-firstName">First name</label>
+          <input
+            ref={firstRef}
+            id="re-firstName"
+            className="dr-re__input"
+            type="text"
+            autoComplete="given-name"
+            value={contact.firstName}
+            onChange={(e) => onChange('firstName', e.target.value)}
+          />
+        </div>
+        <div className="dr-re__field">
+          <label className="dr-re__input-label" htmlFor="re-lastName">Last name</label>
+          <input
+            id="re-lastName"
+            className="dr-re__input"
+            type="text"
+            autoComplete="family-name"
+            value={contact.lastName}
+            onChange={(e) => onChange('lastName', e.target.value)}
+          />
+        </div>
+        <div className="dr-re__field dr-re__field--full">
+          <label className="dr-re__input-label" htmlFor="re-email">Email</label>
+          <input
+            id="re-email"
+            className="dr-re__input"
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            value={contact.email}
+            onChange={(e) => onChange('email', e.target.value)}
+          />
+        </div>
+        <div className="dr-re__field dr-re__field--full">
+          <label className="dr-re__input-label" htmlFor="re-phone">Phone</label>
+          <input
+            id="re-phone"
+            className="dr-re__input"
+            type="tel"
+            inputMode="tel"
+            autoComplete="tel"
+            placeholder="+1 555 555 0123"
+            value={contact.phone}
+            onChange={(e) => onChange('phone', e.target.value)}
+          />
+        </div>
+        <div className="dr-re__field dr-re__field--full">
+          <label className="dr-re__input-label" htmlFor="re-company">
+            Company <span className="dr-re__optional">(optional)</span>
+          </label>
+          <input
+            id="re-company"
+            className="dr-re__input"
+            type="text"
+            autoComplete="organization"
+            value={contact.companyName}
+            onChange={(e) => onChange('companyName', e.target.value)}
+          />
+        </div>
+      </div>
+
+      <button type="submit" className="dr-re__btn-primary" disabled={!valid || submitting}>
+        {submitting ? (
+          <>
+            <IconLoader2 size={18} stroke={2} className="dr-re__spin" /> Calculating your estimate…
+          </>
+        ) : (
+          <>Show My Revenue Estimate <IconArrowRight size={18} stroke={2} /></>
+        )}
+      </button>
+      {onBack && (
+        <button type="button" className="dr-re__back" onClick={onBack} disabled={submitting}>
+          <IconArrowLeft size={16} stroke={2} /> Back
+        </button>
+      )}
+    </motion.form>
   );
 }
 
@@ -299,172 +429,19 @@ function InsightBlock({ answers, estimate }) {
   }, [answers, estimate]);
 
   return (
-    <div className="insight">
+    <div className="dr-re__insight">
+      <span className="dr-re__insight-eyebrow">
+        <IconChartBar size={14} stroke={2} /> Market Insight
+      </span>
       {loading ? (
-        <div className="insight-loading">
-          <span className="spin" /> Analyzing your market…
+        <div className="dr-re__insight-loading">
+          <IconLoader2 size={18} stroke={2} className="dr-re__spin" />
+          Analyzing your market…
         </div>
       ) : (
-        <div className="insight-body">&ldquo;{text}&rdquo;</div>
+        <blockquote className="dr-re__insight-body">&ldquo;{text}&rdquo;</blockquote>
       )}
     </div>
-  );
-}
-
-function CountRange({ low, high }) {
-  const [dispLow, setLow] = useState(0);
-  const [dispHigh, setHigh] = useState(0);
-  useEffect(() => {
-    setLow(0);
-    setHigh(0);
-    const dur = 900;
-    const start = Date.now();
-    const id = setInterval(() => {
-      const p = Math.min(1, (Date.now() - start) / dur);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setLow(Math.round(low * eased));
-      setHigh(Math.round(high * eased));
-      if (p >= 1) clearInterval(id);
-    }, 33);
-    const fallback = setTimeout(() => {
-      setLow(low);
-      setHigh(high);
-      clearInterval(id);
-    }, dur + 200);
-    return () => {
-      clearInterval(id);
-      clearTimeout(fallback);
-    };
-  }, [low, high]);
-  return <div className="result-number">{fmtMoney(dispLow)}–{fmtMoney(dispHigh)}</div>;
-}
-
-function ContactStep({ contact, answers, onChange, onSubmit, onBack }) {
-  const [submitting, setSubmitting] = useState(false);
-  const firstRef = useRef(null);
-  useEffect(() => {
-    firstRef.current && firstRef.current.focus();
-  }, []);
-
-  const trimmed = {
-    firstName: (contact.firstName || '').trim(),
-    lastName: (contact.lastName || '').trim(),
-    email: (contact.email || '').trim(),
-    phone: (contact.phone || '').trim(),
-    companyName: (contact.companyName || '').trim(),
-  };
-  const valid =
-    trimmed.firstName.length >= 1 &&
-    trimmed.lastName.length >= 1 &&
-    EMAIL_RE.test(trimmed.email) &&
-    PHONE_RE.test(trimmed.phone);
-
-  const handleSubmit = async (e) => {
-    if (e) e.preventDefault();
-    if (!valid || submitting) return;
-    setSubmitting(true);
-    const estimate = computeEstimate(answers);
-    await sendLeadToGhl({ answers, estimate, contact: trimmed });
-    onSubmit();
-  };
-
-  return (
-    <form className="screen" onSubmit={handleSubmit}>
-      <div className="q-head">
-        <span className="q-label">Almost there</span>
-        <h2 className="q-title">Where should we send your estimate?</h2>
-        <p className="sub sub-left">
-          Your custom revenue range is ready. Tell us where to send it and we'll unlock the
-          breakdown plus a strategy call invite.
-        </p>
-      </div>
-
-      <div className="contact-grid">
-        <div className="contact-field">
-          <label className="input-label" htmlFor="re-firstName">First name</label>
-          <input
-            ref={firstRef}
-            id="re-firstName"
-            className="contact-input"
-            type="text"
-            autoComplete="given-name"
-            value={contact.firstName}
-            onChange={(e) => onChange('firstName', e.target.value)}
-          />
-        </div>
-        <div className="contact-field">
-          <label className="input-label" htmlFor="re-lastName">Last name</label>
-          <input
-            id="re-lastName"
-            className="contact-input"
-            type="text"
-            autoComplete="family-name"
-            value={contact.lastName}
-            onChange={(e) => onChange('lastName', e.target.value)}
-          />
-        </div>
-        <div className="contact-field contact-field-full">
-          <label className="input-label" htmlFor="re-email">Email</label>
-          <input
-            id="re-email"
-            className="contact-input"
-            type="email"
-            inputMode="email"
-            autoComplete="email"
-            value={contact.email}
-            onChange={(e) => onChange('email', e.target.value)}
-          />
-        </div>
-        <div className="contact-field contact-field-full">
-          <label className="input-label" htmlFor="re-phone">Phone</label>
-          <input
-            id="re-phone"
-            className="contact-input"
-            type="tel"
-            inputMode="tel"
-            autoComplete="tel"
-            placeholder="+1 555 555 0123"
-            value={contact.phone}
-            onChange={(e) => onChange('phone', e.target.value)}
-          />
-        </div>
-        <div className="contact-field contact-field-full">
-          <label className="input-label" htmlFor="re-company">
-            Company <span className="input-optional">(optional)</span>
-          </label>
-          <input
-            id="re-company"
-            className="contact-input"
-            type="text"
-            autoComplete="organization"
-            value={contact.companyName}
-            onChange={(e) => onChange('companyName', e.target.value)}
-          />
-        </div>
-      </div>
-
-      <div style={{ height: 18 }} />
-      <button
-        type="submit"
-        className="btn-gold"
-        disabled={!valid || submitting}
-      >
-        {submitting ? (
-          <>
-            <span className="spin" /> Calculating your estimate…
-          </>
-        ) : (
-          <>
-            Show My Revenue Estimate <ArrowRight />
-          </>
-        )}
-      </button>
-      {onBack && (
-        <button type="button" className="back-btn" onClick={onBack} disabled={submitting}>
-          <ArrowLeft /> Back
-        </button>
-      )}
-    </form>
   );
 }
 
@@ -474,16 +451,28 @@ function ResultScreen({ answers, onReset }) {
   const cityTitle = cityClean.charAt(0).toUpperCase() + cityClean.slice(1);
 
   return (
-    <div className="screen">
-      <div className="result-head">
-        <span className="result-pill">Your Revenue Estimate</span>
-        <h2 className="result-title">{cityTitle} Roofing Could Generate</h2>
-        <CountRange low={estimate.revenueLow} high={estimate.revenueHigh} />
-        <div className="result-caption">estimated new monthly revenue from Google Ads</div>
+    <motion.div
+      className="dr-re__screen dr-re__screen--result"
+      variants={screenVariants}
+      initial="initial"
+      animate="enter"
+      exit="exit"
+    >
+      <div className="dr-re__result-head">
+        <span className="dr-re__result-pill">Your Revenue Estimate</span>
+        <h2 className="dr-re__result-title">{cityTitle} Roofing Could Generate</h2>
+        <div className="dr-re__result-number" key={`${estimate.revenueLow}-${estimate.revenueHigh}`}>
+          <CountUp to={estimate.revenueLow}  duration={1100} format={fmtMoney} />
+          <span className="dr-re__result-dash">–</span>
+          <CountUp to={estimate.revenueHigh} duration={1100} format={fmtMoney} />
+        </div>
+        <div className="dr-re__result-caption">
+          estimated new monthly revenue from Google Ads
+        </div>
       </div>
 
-      <div className="disclaimer">
-        <WarningIcon />
+      <div className="dr-re__disclaimer">
+        <IconAlertTriangle size={18} stroke={2} className="dr-re__disclaimer-icon" />
         <span>
           This is an estimate only based on Florida roofing industry benchmarks. Strong Brands
           United does not guarantee specific lead volumes, revenue figures, or business outcomes.
@@ -491,33 +480,49 @@ function ResultScreen({ answers, onReset }) {
         </span>
       </div>
 
-      <div className="stat-row">
-        <StatCard value={`${estimate.leadsLow}–${estimate.leadsHigh}`} label="Est. Leads / Month" />
-        <StatCard value={estimate.plan} label="Recommended Plan" />
-        <StatCard
-          value={`${fmtMoney(estimate.budgetLow)}–${fmtMoney(estimate.budgetHigh)}`}
-          label="Ad Budget"
-        />
+      <div className="dr-re__stats">
+        <div className="dr-re__stat">
+          <div className="dr-re__stat-v dr-tabular">
+            {estimate.leadsLow}–{estimate.leadsHigh}
+          </div>
+          <div className="dr-re__stat-l">Est. Leads / Month</div>
+        </div>
+        <div className="dr-re__stat">
+          <div className="dr-re__stat-v">{estimate.plan}</div>
+          <div className="dr-re__stat-l">Recommended Plan</div>
+        </div>
+        <div className="dr-re__stat">
+          <div className="dr-re__stat-v dr-tabular">
+            {fmtMoney(estimate.budgetLow)}–{fmtMoney(estimate.budgetHigh)}
+          </div>
+          <div className="dr-re__stat-l">Ad Budget</div>
+        </div>
       </div>
 
       <InsightBlock answers={answers} estimate={estimate} />
 
-      <a className="btn-navy" href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
-        Book Your Free Strategy Call <ArrowRight />
-      </a>
-      <p className="cta-sub">
-        30-minute call. No obligation.
-        <br />We show you exactly how to get these results.
+      <div className="dr-re__result-ctas">
+        <Link to={AUDIT_PATH} className="dr-re__btn-primary">
+          Book My Free Audit <IconArrowRight size={18} stroke={2} />
+        </Link>
+        <a
+          href={CALENDLY_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="dr-re__btn-secondary"
+        >
+          <IconCalendarEvent size={16} stroke={2} /> Or talk to us directly
+        </a>
+      </div>
+      <p className="dr-re__cta-sub">
+        Free 15-minute audit. Data-driven roadmap.
+        <br />We show you exactly how to get to these numbers.
       </p>
 
-      <button
-        className="back-btn"
-        onClick={onReset}
-        style={{ display: 'block', margin: '14px auto 0' }}
-      >
-        <ArrowLeft /> Start over
+      <button type="button" className="dr-re__back dr-re__back--center" onClick={onReset}>
+        <IconRotateClockwise2 size={16} stroke={2} /> Start over
       </button>
-    </div>
+    </motion.div>
   );
 }
 
@@ -527,18 +532,10 @@ function ResultScreen({ answers, onReset }) {
 export default function RevenueEstimator() {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({
-    city: '',
-    ticket: '',
-    leads: '',
-    budget: '',
-    service: '',
+    city: '', ticket: '', leads: '', budget: '', service: '',
   });
   const [contact, setContact] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    companyName: '',
+    firstName: '', lastName: '', email: '', phone: '', companyName: '',
   });
 
   const totalSteps = QUESTIONS.length + 1;
@@ -548,14 +545,11 @@ export default function RevenueEstimator() {
   useEffect(() => {
     const previous = document.title;
     document.title = 'Free Revenue Estimate — Digital Roofers by SBU';
-    return () => {
-      document.title = previous;
-    };
+    return () => { document.title = previous; };
   }, []);
 
   const setAnswer = (key, value) => setAnswers((prev) => ({ ...prev, [key]: value }));
-  const setContactField = (key, value) =>
-    setContact((prev) => ({ ...prev, [key]: value }));
+  const setContactField = (key, value) => setContact((prev) => ({ ...prev, [key]: value }));
   const advance = () => setStep((s) => s + 1);
   const goBack = () => setStep((s) => Math.max(0, s - 1));
   const reset = () => {
@@ -566,37 +560,35 @@ export default function RevenueEstimator() {
 
   const onSelectOption = (qIndex, qId) => (value) => {
     setAnswer(qId, value);
-    setTimeout(() => setStep(qIndex + 2), 180);
+    setTimeout(() => setStep(qIndex + 2), 220);
   };
 
   let body;
+  let bodyKey = `step-${step}`;
   if (step === 0) {
     body = <IntroScreen onStart={() => setStep(1)} />;
   } else if (step >= 1 && step <= QUESTIONS.length) {
     const qIdx = step - 1;
     const q = QUESTIONS[qIdx];
-    if (q.type === 'text') {
-      body = (
-        <TextStep
-          key={q.id}
-          q={q}
-          value={answers[q.id]}
-          onChange={(v) => setAnswer(q.id, v)}
-          onNext={advance}
-          onBack={goBack}
-        />
-      );
-    } else {
-      body = (
-        <OptionStep
-          key={q.id}
-          q={q}
-          value={answers[q.id]}
-          onSelect={onSelectOption(qIdx, q.id)}
-          onBack={goBack}
-        />
-      );
-    }
+    bodyKey = `q-${q.id}`;
+    body = q.type === 'text' ? (
+      <TextStep
+        key={q.id}
+        q={q}
+        value={answers[q.id]}
+        onChange={(v) => setAnswer(q.id, v)}
+        onNext={advance}
+        onBack={goBack}
+      />
+    ) : (
+      <OptionStep
+        key={q.id}
+        q={q}
+        value={answers[q.id]}
+        onSelect={onSelectOption(qIdx, q.id)}
+        onBack={goBack}
+      />
+    );
   } else if (step === contactStep) {
     body = (
       <ContactStep
@@ -612,26 +604,33 @@ export default function RevenueEstimator() {
   }
 
   return (
-    <div className="estimator-page">
-      <div className="gold-rule" />
-      <div className="app">
-        <Link to="/" className="home-link">
-          <ArrowLeft /> Back to home
+    <div className="dr-re">
+      <div className="dr-re__rule" aria-hidden="true" />
+      <div className="dr-re__shell">
+        <Link to="/" className="dr-re__home-link">
+          <IconArrowLeft size={16} stroke={2} /> Back to home
         </Link>
-        <div className="brand">
-          <Link to="/" className="brand-mark">
-            <span className="name">
-              Digital Roofers<span className="accent">/</span>SBU
-            </span>
+
+        <div className="dr-re__brand">
+          <Link to="/" className="dr-re__brand-mark" aria-label="Digital Roofers home">
+            <Logo variant="horizontal" tone="dark" size={36} />
           </Link>
-          <span className="brand-tag">Florida Roofing Leads · Guaranteed Strategy</span>
+          <span className="dr-re__brand-tag">
+            Florida Roofing Growth · Data-Driven Strategy
+          </span>
         </div>
 
-        <ProgressBar step={step > totalSteps ? totalSteps : step} total={totalSteps} />
+        <ProgressRail step={step > totalSteps ? totalSteps : step} total={totalSteps} />
 
-        <div className="card">{body}</div>
+        <div className="dr-re__card">
+          <AnimatePresence mode="wait">
+            <motion.div key={bodyKey} className="dr-re__card-inner">
+              {body}
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
-        <div className="ftr">
+        <div className="dr-re__footer">
           Digital Roofers by SBU — Strong Brands United Corporation — Tampa, FL
         </div>
       </div>
