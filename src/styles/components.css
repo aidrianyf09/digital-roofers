@@ -38,12 +38,12 @@
     letter-spacing: 0.01em;
     text-decoration: none;
     cursor: pointer;
+    /* Primary and urgency only transition the props they actually animate.
+       Ghost adds color + border-color via its own rule below. */
     transition:
       transform var(--dur-fast) var(--ease-out),
       background var(--dur-fast) var(--ease-out),
-      box-shadow var(--dur-fast) var(--ease-out),
-      border-color var(--dur-fast) var(--ease-out),
-      color var(--dur-fast) var(--ease-out);
+      box-shadow var(--dur-fast) var(--ease-out);
   }
   .dr-btn__arrow { transition: transform var(--dur-fast) var(--ease-out); }
   @media (hover: hover) and (pointer: fine) {
@@ -82,6 +82,13 @@
     background: transparent;
     color: var(--brand-charcoal);
     border: 1.5px solid var(--border-strong);
+    /* Ghost-only — color + border animate on hover */
+    transition:
+      transform var(--dur-fast) var(--ease-out),
+      background var(--dur-fast) var(--ease-out),
+      box-shadow var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out);
   }
   .dr-btn--ghost:hover {
     color: var(--brand-sapphire);

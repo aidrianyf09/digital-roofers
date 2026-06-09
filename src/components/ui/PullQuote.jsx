@@ -11,7 +11,7 @@ export default function PullQuote({ children, className = '' }) {
       className={`dr-pull-quote ${className}`.trim()}
       initial={{ opacity: 0, transform: 'translateY(16px)' }}
       whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-      viewport={{ once: true, amount: 0.4 }}
+      viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: dur.slow, ease: ease.outExpo }}
     >
       <blockquote className="dr-pull-quote__text">
