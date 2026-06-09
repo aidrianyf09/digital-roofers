@@ -179,7 +179,13 @@ export default function DetailBlocks() {
             p="The audit is free. The roadmap is yours either way. If you want us to run it, we'll talk numbers, not pitch decks."
           />
           <div className="dr-detail__body">
-            <AIImagePlate ratio="16 / 9" kenBurns={false} reveal />
+            <AIImagePlate
+              src="/imagery/proof/before-after.webp"
+              alt="Before and after of a residential roof replacement in Florida."
+              ratio="16 / 9"
+              kenBurns={false}
+              reveal
+            />
           </div>
         </article>
 

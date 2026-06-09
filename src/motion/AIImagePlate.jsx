@@ -1,11 +1,18 @@
+import { useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { IconPhotoOff } from '@tabler/icons-react';
 import { ease, dur } from './motion-config.js';
 
 /**
- * Image plate. When `src` is set, renders the image with optional Ken Burns drift.
- * When `src` is absent, renders an honest Light Gray placeholder with a photo-off
- * glyph. No grain, no slot label, no fake-screenshot tells.
+ * Image plate. When `src` is set AND the file loads, renders the image with
+ * optional Ken Burns drift. When `src` is missing OR the file fails to load
+ * (e.g. the user hasn't dropped the asset in yet), renders an honest Light
+ * Gray placeholder with a photo-off glyph and a screen-reader 'Image pending'
+ * label.
+ *
+ * This enables the drag-and-drop imagery workflow: a callsite points at a
+ * convention path under /imagery/. If the user has dropped the file, image
+ * appears. Otherwise the placeholder holds the slot. No JSX edits needed.
  */
 export default function AIImagePlate({
   src,
@@ -17,7 +24,9 @@ export default function AIImagePlate({
   style,
 }) {
   const reduced = useReducedMotion();
-  const showKenBurns = kenBurns && !reduced && src;
+  const [hasError, setHasError] = useState(false);
+  const showImage = src && !hasError;
+  const showKenBurns = kenBurns && !reduced && showImage;
 
   const wrapperVariants = reveal && !reduced
     ? {
@@ -28,19 +37,20 @@ export default function AIImagePlate({
 
   return (
     <motion.figure
-      className={`dr-image-plate ${src ? '' : 'is-empty'} ${className}`.trim()}
+      className={`dr-image-plate ${showImage ? '' : 'is-empty'} ${className}`.trim()}
       style={{ aspectRatio: ratio, ...style }}
       variants={wrapperVariants}
       initial={wrapperVariants ? 'hidden' : false}
       whileInView={wrapperVariants ? 'visible' : undefined}
       viewport={{ once: true, amount: 0.3 }}
     >
-      {src ? (
+      {showImage ? (
         <motion.img
           src={src}
           alt={alt}
           className="dr-image-plate__img"
           loading="lazy"
+          onError={() => setHasError(true)}
           animate={showKenBurns ? { scale: 1.06 } : undefined}
           transition={showKenBurns ? { duration: 20, ease: 'easeInOut' } : undefined}
         />

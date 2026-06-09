@@ -69,7 +69,8 @@ export default function AuditHero({ onBookClick }) {
           transition={{ duration: dur.slow, ease: ease.outExpo, delay: 0.35 }}
         >
           <AIImagePlate
-            slot="hero/owner-laptop"
+            src="/imagery/audit-hero/owner-laptop.webp"
+            alt="Roofing-business owner reviewing a Google Ads dashboard on a laptop."
             ratio="5 / 6"
             kenBurns
             reveal={false}
