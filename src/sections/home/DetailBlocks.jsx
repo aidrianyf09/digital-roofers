@@ -12,7 +12,7 @@ const SCORE_ROWS = [
 const GAPS = [
   ['01', 'Google Ads', 'Competitor A is bidding on "emergency roof repair Tampa" with location extensions and call tracking. You aren\'t bidding on emergency keywords at all.'],
   ['02', 'Website',    'Their site loads in 1.4s on mobile and has a sticky "Free Inspection" CTA. Yours loads in 4.1s and buries the phone number in the footer.'],
-  ['03', 'Social',     'They post 4× per week — job-site walkthroughs, before/afters, and crew videos. You haven\'t posted since March.'],
+  ['03', 'Social',     'They post 4 times per week: job-site walkthroughs, before/afters, and crew videos. You haven\'t posted since March.'],
   ['04', 'Reviews',    'They\'ve added 47 Google reviews this year. You\'ve added 6. Their average response time is under 24 hours.'],
   ['05', 'Lead Response','Their inbound form pings them and texts the homeowner inside 2 minutes. Your form goes to an inbox checked twice a day.'],
 ];
@@ -65,7 +65,7 @@ export default function DetailBlocks() {
             num="01"
             eyebrow="Section 1 · Your Score"
             h3="[Company Name] Digital Presence Audit."
-            p="Scored on 5 pillars (1–10 each). One number tells you nothing. Five numbers tell you exactly where to push."
+            p="Scored on 5 pillars (1 to 10 each). One number tells you nothing. Five numbers tell you exactly where to push."
           />
           <StaggerIn className="dr-detail__body" staggerChildren={0.06}>
             <StaggerItem className="dr-score-card">
@@ -96,7 +96,7 @@ export default function DetailBlocks() {
             num="02"
             eyebrow="Section 2 · Competitor Comparison"
             h3="How you stack against the top 3 in your zip code."
-            p="Simple table. Their scores vs yours. Where you are winning. Where you are losing. No interpretation theater — the numbers do the talking."
+            p="Simple table. Their scores vs yours. Where you are winning. Where you are losing. No interpretation theater. The numbers do the talking."
           />
           <div className="dr-detail__body">
             <div className="dr-cmp-wrap">
@@ -122,7 +122,7 @@ export default function DetailBlocks() {
             num="03"
             eyebrow="Section 3 · The Gap Analysis"
             h3="Here is what your top competitor is doing that you are not."
-            p="Specific. Actionable. Real. The receipts on what's working for the guys eating your lunch — and the exact moves to take them on."
+            p="Specific. Actionable. Real. The receipts on what's working for the guys eating your lunch, and the exact moves to take them on."
           />
           <StaggerIn className="dr-detail__body dr-gap-list" staggerChildren={0.06}>
             {GAPS.map(([num, label, body]) => (
@@ -167,7 +167,7 @@ export default function DetailBlocks() {
             num="05"
             eyebrow="Section 5 · The CTA"
             h3="We can execute this for you."
-            p="The audit is free. The roadmap is yours either way. If you want us to run it, we'll talk numbers — not pitch decks."
+            p="The audit is free. The roadmap is yours either way. If you want us to run it, we'll talk numbers, not pitch decks."
           />
           <div className="dr-detail__body">
             <AIImagePlate slot="proof/before-after" ratio="16 / 9" kenBurns={false} reveal />

@@ -57,46 +57,21 @@
     margin: 0;
     background: var(--surface-alt);
     box-shadow: var(--shadow-lifted);
-    will-change: transform;
   }
   .dr-image-plate__img {
     width: 100%; height: 100%;
     object-fit: cover;
     display: block;
-    will-change: transform;
   }
-  .dr-image-plate__placeholder {
+  .dr-image-plate.is-empty {
+    background: var(--surface-alt);
+    box-shadow: none;
+    border: 1px solid var(--border);
+  }
+  .dr-image-plate__empty {
     position: absolute; inset: 0;
-    background:
-      radial-gradient(120% 80% at 20% 0%, color-mix(in srgb, var(--brand-teal) 28%, transparent), transparent 60%),
-      linear-gradient(135deg, var(--brand-sapphire), color-mix(in srgb, var(--brand-sapphire) 60%, var(--brand-teal)));
-  }
-  .dr-image-plate__noise {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    opacity: 0.35;
-    mix-blend-mode: overlay;
-  }
-  .dr-image-plate__slot {
-    position: absolute;
-    bottom: var(--space-3);
-    left: var(--space-3);
-    display: inline-flex; align-items: center; gap: 6px;
-    background: color-mix(in srgb, var(--brand-charcoal) 70%, transparent);
-    backdrop-filter: blur(6px);
-    color: var(--brand-white);
-    padding: 6px 10px;
-    border-radius: var(--radius-pill);
-    font-family: var(--font-body);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .dr-image-plate__slot-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--brand-coral);
-    box-shadow: 0 0 8px var(--brand-coral);
+    display: grid; place-items: center;
+    color: color-mix(in srgb, var(--ink-muted) 60%, transparent);
   }
 
   /* ============================================================
@@ -162,10 +137,8 @@
     right: var(--space-4);
     bottom: var(--space-4);
     width: min(360px, 92%);
-    background: color-mix(in srgb, var(--brand-white) 78%, transparent);
-    backdrop-filter: saturate(140%) blur(16px);
-    -webkit-backdrop-filter: saturate(140%) blur(16px);
-    border: 1px solid color-mix(in srgb, var(--brand-white) 50%, transparent);
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     padding: var(--space-4);
     box-shadow: var(--shadow-floating);
@@ -463,7 +436,8 @@
     align-items: center;
     padding: 10px 12px;
     background: var(--surface-alt);
-    border-left: 3px solid var(--brand-sapphire);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
     font-family: var(--font-body);
     font-size: 14px;
     color: var(--brand-charcoal);
@@ -609,7 +583,6 @@
     padding: var(--space-4) var(--space-5);
     background: var(--surface);
     border: 1px solid var(--border);
-    border-left: 3px solid var(--brand-sapphire);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-flat);
   }

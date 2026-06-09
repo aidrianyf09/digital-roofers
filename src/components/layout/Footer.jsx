@@ -7,14 +7,6 @@ const PHONE_DISPLAY = '+1 (813) 957-9715';
 const PHONE_HREF = 'tel:+18139579715';
 const ADDRESS = ['217 S Cedar Ave, Unit C', 'Tampa, FL 33606'];
 
-const MARQUEE_ITEMS = [
-  'DATA-DRIVEN',
-  'MEASURABLE ROI',
-  'FLORIDA ROOFERS',
-  'STRATEGY-FIRST',
-  'PARTNERSHIP NOT TRANSACTION',
-];
-
 export default function Footer() {
   return (
     <footer className="dr-footer" id="footer">
@@ -23,7 +15,7 @@ export default function Footer() {
           <div className="dr-footer__col dr-footer__col--brand">
             <Logo variant="horizontal" tone="light" size={48} />
             <p className="dr-footer__tag">
-              Marketing that actually moves the needle — for Florida roofers.
+              Marketing that actually moves the needle for Florida roofers.
             </p>
           </div>
 
@@ -53,16 +45,6 @@ export default function Footer() {
               <li><Link to="/free-audit">Free Audit</Link></li>
               <li><Link to="/revenue-estimator">Revenue Estimator</Link></li>
             </ul>
-          </div>
-        </div>
-
-        <div className="dr-footer__marquee" aria-hidden="true">
-          <div className="dr-footer__marquee-track">
-            {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
-              <span key={i} className="dr-footer__marquee-item">
-                {item} <span className="dr-footer__marquee-dot">•</span>
-              </span>
-            ))}
           </div>
         </div>
 

@@ -16,7 +16,7 @@ export default function QuoteBlock() {
             attribution="Roofing Company Owner"
             role="Tampa, FL · Placeholder testimonial"
           >
-            They actually showed up with the numbers — not a sales deck. Five
+            They actually showed up with the numbers, not a sales deck. Five
             pillars, side-by-side with three competitors, and a 90-day plan I
             could hand to my team on day one.
           </Quote>

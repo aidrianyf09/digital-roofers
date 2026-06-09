@@ -47,7 +47,7 @@ export default function ThreeColumns() {
             <div className="dr-howit__step"><span className="dr-howit__badge">1</span> Score You</div>
             <div className="dr-howit__title">Your digital presence on 5 pillars.</div>
             <p className="dr-howit__desc">
-              Google Ads. Website. Social. AI search. Competitor gap. Each rated 1–10. Honest. Specific.
+              Google Ads. Website. Social. AI search. Competitor gap. Each rated 1 to 10. Honest. Specific.
             </p>
             <div className="dr-howit__bars" aria-hidden="true">
               {COL1.map(([label, w, n]) => (
@@ -64,7 +64,7 @@ export default function ThreeColumns() {
             <div className="dr-howit__step"><span className="dr-howit__badge">2</span> Score Them</div>
             <div className="dr-howit__title">Your top competitors on the same 5 pillars.</div>
             <p className="dr-howit__desc">
-              We pull the top 3–5 roofers in your service area and score them too. Same scale. Side-by-side.
+              We pull the top 3 to 5 roofers in your service area and score them too. Same scale. Side-by-side.
             </p>
             <div className="dr-howit__vs">
               {COL2.map(([label, cls, tag]) => (

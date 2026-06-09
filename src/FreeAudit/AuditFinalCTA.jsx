@@ -15,7 +15,7 @@ export default function AuditFinalCTA({ onBookClick }) {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: dur.base, ease: ease.outExpo }}
         >
-          Free Audit · 5 Spots / Week · No Pitch
+          Free audit. 5 spots a week.
         </motion.span>
 
         <h2 className="dr-fa-final__h2">
@@ -55,7 +55,7 @@ export default function AuditFinalCTA({ onBookClick }) {
               Book My Free Audit
             </Button>
           </MagneticCTA>
-          <span className="dr-fa-final__meta">15 Minutes · Free · No Obligation</span>
+          <span className="dr-fa-final__meta">15 minutes free. No obligation.</span>
         </motion.div>
       </div>
     </section>

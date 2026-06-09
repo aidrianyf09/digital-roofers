@@ -21,7 +21,7 @@ const AuditPlatformPicker = forwardRef(function AuditPlatformPicker({ selected, 
           </span>
           <h2 className="dr-fa-section-h2">What should we audit?</h2>
           <p className="dr-fa-section-sub">
-            Pick one — we tailor the 15-minute review to the channel you actually run.
+            Pick one. We tailor the 15-minute review to the channel you actually run.
           </p>
         </header>
 

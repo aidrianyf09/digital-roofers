@@ -38,8 +38,8 @@ const QUESTIONS = [
     sub: 'A rough average across residential, commercial, and storm work.',
     options: [
       { value: 'under8',  label: 'Under $8,000',       desc: 'Mostly repairs and partials',      low: 5000,  high: 8000 },
-      { value: '8to15',   label: '$8,000 – $15,000',   desc: 'Mix of repairs and re-roofs',      low: 8000,  high: 15000 },
-      { value: '15to25',  label: '$15,000 – $25,000',  desc: 'Full residential re-roofs',        low: 15000, high: 25000 },
+      { value: '8to15',   label: '$8,000 to $15,000',  desc: 'Mix of repairs and re-roofs',      low: 8000,  high: 15000 },
+      { value: '15to25',  label: '$15,000 to $25,000', desc: 'Full residential re-roofs',        low: 15000, high: 25000 },
       { value: 'over25',  label: '$25,000+',           desc: 'Larger residential or commercial', low: 25000, high: 45000 },
     ],
   },
@@ -48,11 +48,11 @@ const QUESTIONS = [
     type: 'option',
     label: 'Question 03',
     title: 'How many qualified leads do you get monthly right now?',
-    sub: 'Real inbound leads — phone calls, form fills, referrals worth quoting.',
+    sub: 'Real inbound leads. Phone calls, form fills, referrals worth quoting.',
     options: [
-      { value: '0-10',  label: '0 – 10 leads / month',  desc: "We're leaving real money on the table",   mult: 0.7 },
-      { value: '11-25', label: '11 – 25 leads / month', desc: 'Decent volume, room to scale',            mult: 1.0 },
-      { value: '26-50', label: '26 – 50 leads / month', desc: "Strong pipeline — let's tighten it",      mult: 1.2 },
+      { value: '0-10',  label: '0 to 10 leads / month',  desc: "We're leaving real money on the table",   mult: 0.7 },
+      { value: '11-25', label: '11 to 25 leads / month', desc: 'Decent volume, room to scale',            mult: 1.0 },
+      { value: '26-50', label: '26 to 50 leads / month', desc: "Strong pipeline. Let's tighten it",       mult: 1.2 },
       { value: '50+',   label: '50+ leads / month',     desc: 'Mature operation, optimize cost-per-job', mult: 1.3 },
     ],
   },
@@ -65,8 +65,8 @@ const QUESTIONS = [
     options: [
       { value: 'none',     label: 'Not running ads yet',     desc: "We'll recommend a starting budget", budgetLow: 2500,  budgetHigh: 4000,  plan: 'Foundation' },
       { value: 'under2k',  label: 'Under $2,000 / month',    desc: 'Small test budget',                 budgetLow: 1500,  budgetHigh: 2000,  plan: 'Foundation' },
-      { value: '2to5k',    label: '$2,000 – $5,000 / month', desc: 'Standard launch budget',            budgetLow: 2000,  budgetHigh: 5000,  plan: 'Accelerator' },
-      { value: '5to15k',   label: '$5,000 – $15,000 / month', desc: 'Scaling operator',                 budgetLow: 5000,  budgetHigh: 15000, plan: 'Operator' },
+      { value: '2to5k',    label: '$2,000 to $5,000 / month', desc: 'Standard launch budget',            budgetLow: 2000,  budgetHigh: 5000,  plan: 'Accelerator' },
+      { value: '5to15k',   label: '$5,000 to $15,000 / month', desc: 'Scaling operator',                 budgetLow: 5000,  budgetHigh: 15000, plan: 'Operator' },
       { value: 'over15k',  label: '$15,000+ / month',        desc: 'Multi-market dominance',            budgetLow: 15000, budgetHigh: 30000, plan: 'Dominator' },
     ],
   },
@@ -387,7 +387,7 @@ function ContactStep({ contact, answers, onChange, onSubmit, onBack }) {
 function staticInsight(answers, estimate) {
   const city = (answers.city || 'Your market').trim();
   const svc = (estimate.serviceLabel || 'roofing').toLowerCase();
-  return `${city} has 3–5 competitors actively bidding on "${svc}" keywords. Install call tracking and bid on emergency intent terms — that's where the high-ticket jobs live.`;
+  return `${city} has 3 to 5 competitors actively bidding on "${svc}" keywords. Install call tracking and bid on emergency intent terms. That's where the high-ticket jobs live.`;
 }
 
 function InsightBlock({ answers, estimate }) {
@@ -463,7 +463,7 @@ function ResultScreen({ answers, onReset }) {
         <h2 className="dr-re__result-title">{cityTitle} Roofing Could Generate</h2>
         <div className="dr-re__result-number" key={`${estimate.revenueLow}-${estimate.revenueHigh}`}>
           <CountUp to={estimate.revenueLow}  duration={1100} format={fmtMoney} />
-          <span className="dr-re__result-dash">–</span>
+          <span className="dr-re__result-dash">to</span>
           <CountUp to={estimate.revenueHigh} duration={1100} format={fmtMoney} />
         </div>
         <div className="dr-re__result-caption">
@@ -483,7 +483,7 @@ function ResultScreen({ answers, onReset }) {
       <div className="dr-re__stats">
         <div className="dr-re__stat">
           <div className="dr-re__stat-v dr-tabular">
-            {estimate.leadsLow}–{estimate.leadsHigh}
+            {estimate.leadsLow} to {estimate.leadsHigh}
           </div>
           <div className="dr-re__stat-l">Est. Leads / Month</div>
         </div>
@@ -493,7 +493,7 @@ function ResultScreen({ answers, onReset }) {
         </div>
         <div className="dr-re__stat">
           <div className="dr-re__stat-v dr-tabular">
-            {fmtMoney(estimate.budgetLow)}–{fmtMoney(estimate.budgetHigh)}
+            {fmtMoney(estimate.budgetLow)} to {fmtMoney(estimate.budgetHigh)}
           </div>
           <div className="dr-re__stat-l">Ad Budget</div>
         </div>
@@ -544,7 +544,7 @@ export default function RevenueEstimator() {
 
   useEffect(() => {
     const previous = document.title;
-    document.title = 'Free Revenue Estimate — Digital Roofers by SBU';
+    document.title = 'Free Revenue Estimate. Digital Roofers by SBU';
     return () => { document.title = previous; };
   }, []);
 
@@ -631,7 +631,7 @@ export default function RevenueEstimator() {
         </div>
 
         <div className="dr-re__footer">
-          Digital Roofers by SBU — Strong Brands United Corporation — Tampa, FL
+          Digital Roofers by SBU. Strong Brands United Corporation. Tampa, FL.
         </div>
       </div>
     </main>

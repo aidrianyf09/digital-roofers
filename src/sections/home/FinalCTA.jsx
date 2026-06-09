@@ -19,7 +19,7 @@ export default function FinalCTA() {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: dur.base, ease: ease.outExpo }}
         >
-          Book a Call · 15 Minutes · No Pitch
+          Book a 15-minute call. No pitch.
         </motion.span>
 
         <WordReveal

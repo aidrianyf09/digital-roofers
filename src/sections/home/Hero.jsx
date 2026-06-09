@@ -11,7 +11,7 @@ const HERO_SERVICES = [
   { num: '02', name: 'Meta Ads', tag: 'Paid Social' },
   { num: '03', name: 'Social Media Management', tag: 'Organic' },
   { num: '04', name: 'Web Design / Web Development', tag: 'Build' },
-  { num: '05', name: 'And More!', tag: 'SEO · Email · Branding' },
+  { num: '05', name: 'And More!', tag: 'SEO, Email, Branding' },
 ];
 
 const ESTIMATOR_PATH = '/revenue-estimator';
@@ -69,8 +69,8 @@ export default function Hero() {
             transition={{ duration: dur.base, ease: ease.outExpo, delay: 0.6 }}
           >
             Marketing that actually moves the needle for Florida roofers.
-            Data-driven strategy, executed end-to-end. No fluff, no theory —
-            just what works.
+            Data-driven strategy, executed end-to-end. No fluff, no theory.
+            Just what works.
           </motion.p>
 
           <motion.div
@@ -84,7 +84,7 @@ export default function Hero() {
                 Let&apos;s talk roofs
               </Button>
             </MagneticCTA>
-            <span className="dr-hero__cta-meta">15 min · No pitch · Real numbers</span>
+            <span className="dr-hero__cta-meta">15 minutes. No pitch.</span>
           </motion.div>
         </div>
 
