@@ -1,33 +1,13 @@
-import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import WordReveal from '../../motion/WordReveal.jsx';
-import AIImagePlate from '../../motion/AIImagePlate.jsx';
 import MagneticCTA from '../../motion/MagneticCTA.jsx';
 import Button from '../../components/ui/Button.jsx';
+import FloridaMap from '../../components/map/FloridaMap.jsx';
 import { ease, dur } from '../../motion/motion-config.js';
-
-const HERO_SERVICES = [
-  { num: '01', name: 'Google Ads', tag: 'Paid Search' },
-  { num: '02', name: 'Meta Ads', tag: 'Paid Social' },
-  { num: '03', name: 'Social Media Management', tag: 'Organic' },
-  { num: '04', name: 'Web Design / Web Development', tag: 'Build' },
-  { num: '05', name: 'And More!', tag: 'SEO, Email, Branding' },
-];
 
 const ESTIMATOR_PATH = '/revenue-estimator';
 
 export default function Hero() {
-  const [activeSvc, setActiveSvc] = useState(0);
-  const [svcHover, setSvcHover] = useState(false);
-
-  useEffect(() => {
-    if (svcHover) return;
-    const id = setInterval(() => {
-      setActiveSvc((i) => (i + 1) % HERO_SERVICES.length);
-    }, 2400);
-    return () => clearInterval(id);
-  }, [svcHover]);
-
   return (
     <section className="dr-hero">
       <div className="dr-container dr-hero__grid">
@@ -38,7 +18,7 @@ export default function Hero() {
             animate={{ opacity: 1, transform: 'translateY(0px)' }}
             transition={{ duration: dur.base, ease: ease.outExpo }}
           >
-            Digital Roofers <span className="dr-hero__eyebrow-sep">/</span> By SBU
+            Florida Roofers <span className="dr-hero__eyebrow-sep">/</span> By SBU
           </motion.span>
 
           <h1 className="dr-hero__h1">
@@ -94,43 +74,7 @@ export default function Hero() {
           animate={{ opacity: 1, transform: 'translateY(0px)' }}
           transition={{ duration: dur.slow, ease: ease.outExpo, delay: 0.35 }}
         >
-          <AIImagePlate
-            slot="hero/owner-dashboard"
-            ratio="4 / 5"
-            kenBurns
-            reveal={false}
-            className="dr-hero__plate"
-          />
-          <div
-            className="dr-hero__svc-card"
-            onMouseEnter={() => setSvcHover(true)}
-            onMouseLeave={() => setSvcHover(false)}
-          >
-            <div className="dr-hero__svc-head">
-              <span className="dr-hero__svc-eyebrow">What We Do</span>
-              <span className="dr-tabular">
-                {String(activeSvc + 1).padStart(2, '0')} / {String(HERO_SERVICES.length).padStart(2, '0')}
-              </span>
-            </div>
-            <ul className="dr-hero__svc-list" role="list">
-              {HERO_SERVICES.map((svc, i) => (
-                <li
-                  key={svc.name}
-                  className={`dr-hero__svc-item ${i === activeSvc ? 'is-active' : ''}`}
-                  onMouseEnter={() => setActiveSvc(i)}
-                >
-                  <a href="#services" className="dr-hero__svc-link">
-                    <span className="dr-hero__svc-num">{svc.num}</span>
-                    <span className="dr-hero__svc-body">
-                      <span className="dr-hero__svc-name">{svc.name}</span>
-                      <span className="dr-hero__svc-tag">{svc.tag}</span>
-                    </span>
-                    <span className="dr-hero__svc-arrow" aria-hidden="true">→</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <FloridaMap />
         </motion.aside>
       </div>
     </section>

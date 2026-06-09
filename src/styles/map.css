@@ -1,0 +1,145 @@
+@layer components {
+
+  /* ============================================================
+     Florida map (hero visual)
+     ============================================================ */
+  .dr-map {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    width: 100%;
+    max-width: 540px;
+    margin-inline: auto;
+  }
+  .dr-map__svg {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 340 / 300;
+    display: block;
+  }
+  .dr-map__svg a {
+    cursor: pointer;
+    outline: none;
+  }
+  .dr-map__svg a:focus-visible circle:nth-of-type(2) {
+    /* ring around the pin dot on keyboard focus */
+    stroke: var(--brand-teal);
+    stroke-width: 2;
+  }
+  .dr-map__pin text {
+    user-select: none;
+    transition: fill var(--dur-fast) var(--ease-out);
+  }
+  .dr-map__svg a:hover .dr-map__pin text,
+  .dr-map__svg a:focus-visible .dr-map__pin text {
+    fill: var(--brand-teal);
+  }
+  .dr-map__hint {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-accent);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-muted);
+    padding-left: var(--space-3);
+  }
+  .dr-map__hint-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--brand-coral);
+    box-shadow: 0 0 8px var(--brand-coral);
+    animation: dr-map-pulse 2s ease-in-out infinite;
+  }
+  @keyframes dr-map-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.5; transform: scale(0.85); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .dr-map__hint-dot { animation: none; }
+  }
+
+  /* ============================================================
+     Per-city page
+     ============================================================ */
+  .dr-city {
+    background: var(--surface);
+  }
+  .dr-city__hero {
+    padding-block: var(--space-8) var(--space-10);
+  }
+  .dr-city__breadcrumb {
+    margin-bottom: var(--space-7);
+  }
+  .dr-city__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    padding: 6px 0;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .dr-city__back:hover { color: var(--brand-sapphire); }
+  .dr-city__eyebrow {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: var(--space-3);
+  }
+  .dr-city__h1 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(40px, 6vw, 84px);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    color: var(--brand-charcoal);
+    margin: 0 0 var(--space-5) 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .dr-city__h1-city { color: var(--accent); display: block; }
+  .dr-city__positioning {
+    font-family: var(--font-accent);
+    font-style: italic;
+    font-size: clamp(20px, 2.2vw, 28px);
+    line-height: 1.5;
+    color: var(--brand-charcoal);
+    max-width: 60ch;
+    margin-bottom: var(--space-4);
+  }
+  .dr-city__audience {
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--ink-muted);
+    letter-spacing: 0.01em;
+    max-width: 60ch;
+    margin-bottom: var(--space-6);
+  }
+  .dr-city__cta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    flex-wrap: wrap;
+  }
+  .dr-city__secondary {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--ink-muted);
+    border-bottom: 1px solid var(--border-strong);
+    padding-bottom: 2px;
+    transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  }
+  .dr-city__secondary:hover {
+    color: var(--brand-sapphire);
+    border-color: var(--brand-sapphire);
+  }
+}
