@@ -1,0 +1,61 @@
+@layer base {
+  html {
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: 1.55;
+  }
+
+  body {
+    min-height: 100vh;
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-body);
+  }
+
+  ::selection {
+    background: var(--brand-sapphire);
+    color: var(--brand-white);
+  }
+
+  /* Brand typography helpers (utilities can override per element) */
+  .dr-h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-h1);
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+  }
+  .dr-h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+  .dr-h3 {
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .dr-body { font-family: var(--font-body); font-size: var(--text-body); color: var(--ink); }
+  .dr-subtext { font-family: var(--font-body); font-size: var(--text-subtext); color: var(--ink-muted); }
+  .dr-caption { font-family: var(--font-body); font-size: var(--text-caption); color: var(--ink-muted); }
+  .dr-quote { font-family: var(--font-accent); font-style: italic; color: var(--ink); }
+  .dr-display { font-family: var(--font-display); font-weight: 800; font-size: var(--text-display); line-height: 0.95; letter-spacing: -0.02em; color: var(--ink); }
+  .dr-mega { font-family: var(--font-display); font-weight: 900; font-size: var(--text-mega); line-height: 0.9; letter-spacing: -0.03em; color: var(--ink); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
