@@ -9,8 +9,8 @@ export default function PullQuote({ children, className = '' }) {
   return (
     <motion.figure
       className={`dr-pull-quote ${className}`.trim()}
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, transform: 'translateY(16px)' }}
+      whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
       viewport={{ once: true, amount: 0.4 }}
       transition={{ duration: dur.slow, ease: ease.outExpo }}
     >

@@ -500,6 +500,15 @@
     padding-bottom: 0.04em;
     color: var(--brand-sapphire);
   }
+  /* At ≤720px the rail's giant 01/05 stacks above the intro and competes
+     with the Sapphire drop cap for visual anchor. Shrink + mute the drop
+     cap so the rail wins. */
+  @media (max-width: 720px) {
+    .dr-detail__p::first-letter {
+      font-size: 3em;
+      color: var(--ink-muted);
+    }
+  }
   .dr-detail__body { padding-left: clamp(0px, 8vw, 164px); }
   @media (max-width: 720px) { .dr-detail__body { padding-left: 0; } }
 

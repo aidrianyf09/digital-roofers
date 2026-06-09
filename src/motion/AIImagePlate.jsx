@@ -45,8 +45,9 @@ export default function AIImagePlate({
           transition={showKenBurns ? { duration: 20, ease: 'easeInOut' } : undefined}
         />
       ) : (
-        <div className="dr-image-plate__empty" aria-hidden="true">
-          <IconPhotoOff size={32} stroke={1.5} />
+        <div className="dr-image-plate__empty">
+          <IconPhotoOff size={32} stroke={1.5} aria-hidden="true" />
+          <span className="dr-visually-hidden">Image pending.</span>
         </div>
       )}
     </motion.figure>
