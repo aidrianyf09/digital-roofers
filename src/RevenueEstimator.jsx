@@ -604,7 +604,7 @@ export default function RevenueEstimator() {
   }
 
   return (
-    <div className="dr-re">
+    <main className="dr-re">
       <div className="dr-re__rule" aria-hidden="true" />
       <div className="dr-re__shell">
         <Link to="/" className="dr-re__home-link">
@@ -634,6 +634,6 @@ export default function RevenueEstimator() {
           Digital Roofers by SBU — Strong Brands United Corporation — Tampa, FL
         </div>
       </div>
-    </div>
+    </main>
   );
 }
