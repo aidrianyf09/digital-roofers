@@ -1,8 +1,9 @@
-import { SearchIcon, TargetIcon, MonitorIcon, CheckIcon } from './Icons.jsx';
+import { IconBrandGoogleFilled, IconBrandMeta, IconDeviceLaptop, IconCheck } from '@tabler/icons-react';
+import StaggerIn, { StaggerItem } from '../motion/StaggerIn.jsx';
 
 const CARDS = [
   {
-    Icon: SearchIcon,
+    Icon: IconBrandGoogleFilled,
     title: 'Google Ads Account',
     items: [
       'Campaign structure',
@@ -14,7 +15,7 @@ const CARDS = [
     ],
   },
   {
-    Icon: TargetIcon,
+    Icon: IconBrandMeta,
     title: 'Meta Ads Account',
     items: [
       'Campaign objectives',
@@ -26,7 +27,7 @@ const CARDS = [
     ],
   },
   {
-    Icon: MonitorIcon,
+    Icon: IconDeviceLaptop,
     title: 'Website and Tracking',
     items: [
       'Landing page conversion rate',
@@ -39,42 +40,43 @@ const CARDS = [
   },
 ];
 
-const delays = ['d1', 'd2', 'd3'];
-
 export default function AuditChecklist() {
   return (
-    <section className="audit-checklist">
-      <div className="wrap">
-        <header className="audit-section-head">
-          <span className="mono audit-eyebrow r-up">What We Audit</span>
-          <h2 className="display audit-section-h2 r-up d1">
-            Every angle.<br />Not just the ads.
+    <section className="dr-fa-checklist">
+      <div className="dr-container">
+        <header className="dr-fa-section-head">
+          <span className="dr-eyebrow">
+            <span className="dr-eyebrow__num">04</span>
+            <span className="dr-eyebrow__sep">/</span>
+            What We Audit
+          </span>
+          <h2 className="dr-fa-section-h2">
+            Every angle. <span className="dr-fa-accent">Not just the ads.</span>
           </h2>
         </header>
 
-        <div className="audit-checklist-grid">
-          {CARDS.map(({ Icon, title, items }, i) => (
-            <article key={title} className={`audit-check-card r-up ${delays[i]}`}>
-              <span className="audit-check-shadow" aria-hidden="true"></span>
-              <div className="audit-check-inner">
-                <div className="audit-check-icon">
-                  <Icon size={32} />
-                </div>
-                <h3 className="display audit-check-title">{title}</h3>
-                <ul className="audit-check-items">
-                  {items.map((it) => (
-                    <li key={it} className="audit-check-item">
-                      <span className="audit-check-tick" aria-hidden="true">
-                        <CheckIcon size={14} />
-                      </span>
-                      <span>{it}</span>
-                    </li>
-                  ))}
-                </ul>
+        <StaggerIn className="dr-fa-checklist__grid" staggerChildren={0.12}>
+          {CARDS.map(({ Icon, title, items }) => (
+            <StaggerItem key={title} as="article" className="dr-fa-check-card">
+              <div className="dr-fa-check-card__head">
+                <span className="dr-fa-check-card__icon" aria-hidden="true">
+                  <Icon size={28} stroke={1.75} />
+                </span>
+                <h3 className="dr-fa-check-card__title">{title}</h3>
               </div>
-            </article>
+              <ul className="dr-fa-check-card__items">
+                {items.map((it) => (
+                  <li key={it} className="dr-fa-check-card__item">
+                    <span className="dr-fa-check-card__tick" aria-hidden="true">
+                      <IconCheck size={14} stroke={2.5} />
+                    </span>
+                    <span>{it}</span>
+                  </li>
+                ))}
+              </ul>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerIn>
       </div>
     </section>
   );

@@ -1,3 +1,6 @@
+import { IconQuote, IconMapPin } from '@tabler/icons-react';
+import StaggerIn, { StaggerItem } from '../motion/StaggerIn.jsx';
+
 // REPLACE: Replace placeholder testimonials with real client quotes when available
 // REPLACE: Real client names and locations
 const QUOTES = [
@@ -24,41 +27,35 @@ const QUOTES = [
   },
 ];
 
-const delays = ['d1', 'd2', 'd3'];
-
 export default function AuditTestimonials() {
   return (
-    <section className="audit-testimonials">
-      <div className="wrap">
-        <header className="audit-section-head">
-          <h2 className="display audit-section-h2 r-up">
-            Results speak louder.
-          </h2>
+    <section className="dr-fa-testimonials">
+      <div className="dr-container">
+        <header className="dr-fa-section-head">
+          <span className="dr-eyebrow">
+            <span className="dr-eyebrow__num">05</span>
+            <span className="dr-eyebrow__sep">/</span>
+            Results
+          </span>
+          <h2 className="dr-fa-section-h2">Results speak louder.</h2>
         </header>
 
-        <div className="audit-testimonials-grid">
+        <StaggerIn className="dr-fa-testimonials__grid" staggerChildren={0.12}>
           {QUOTES.map((q, i) => (
-            <figure
-              key={i}
-              className={`audit-quote-card r-up ${delays[i]}`}
-            >
-              <span className="audit-quote-shadow" aria-hidden="true"></span>
-              <div className="audit-quote-inner">
-                <span className="audit-quote-mark" aria-hidden="true">
-                  &ldquo;
-                </span>
-                <blockquote className="audit-quote-body">{q.quote}</blockquote>
-                <figcaption className="audit-quote-foot">
-                  <div className="audit-quote-name">{q.name}</div>
-                  <div className="mono audit-quote-meta">
-                    {q.location}
-                  </div>
-                  <div className="mono audit-quote-label">{q.label}</div>
-                </figcaption>
-              </div>
-            </figure>
+            <StaggerItem key={i} as="figure" className="dr-fa-quote-card">
+              <IconQuote size={28} stroke={1.5} className="dr-fa-quote-card__mark" aria-hidden="true" />
+              <blockquote className="dr-fa-quote-card__body">{q.quote}</blockquote>
+              <figcaption className="dr-fa-quote-card__foot">
+                <div className="dr-fa-quote-card__name">{q.name}</div>
+                <div className="dr-fa-quote-card__meta">
+                  <IconMapPin size={12} stroke={2} aria-hidden="true" />
+                  {q.location}
+                </div>
+                <div className="dr-fa-quote-card__label">{q.label}</div>
+              </figcaption>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerIn>
       </div>
     </section>
   );

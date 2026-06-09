@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { ChevronIcon } from './Icons.jsx';
+import { motion, AnimatePresence } from 'motion/react';
+import { IconChevronDown } from '@tabler/icons-react';
+import { ease, dur } from '../motion/motion-config.js';
 
 const FAQ = [
   {
@@ -25,36 +27,40 @@ const FAQ = [
 ];
 
 function FAQItem({ q, a, isOpen, onToggle, id }) {
-  const bodyRef = useRef(null);
-  const [maxH, setMaxH] = useState(0);
-
-  useEffect(() => {
-    if (!bodyRef.current) return;
-    setMaxH(isOpen ? bodyRef.current.scrollHeight : 0);
-  }, [isOpen]);
-
   return (
-    <div className={`audit-faq-item${isOpen ? ' is-open' : ''}`}>
+    <div className={`dr-fa-faq__item ${isOpen ? 'is-open' : ''}`}>
       <button
         type="button"
-        className="audit-faq-q"
+        className="dr-fa-faq__q"
         aria-expanded={isOpen}
         aria-controls={`faq-${id}`}
         onClick={onToggle}
       >
-        <span className="display audit-faq-q-text">{q}</span>
-        <span className="audit-faq-chevron" aria-hidden="true">
-          <ChevronIcon size={22} />
-        </span>
+        <span className="dr-fa-faq__q-mark" aria-hidden="true">Q.</span>
+        <span className="dr-fa-faq__q-text">{q}</span>
+        <motion.span
+          className="dr-fa-faq__chevron"
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ duration: dur.base, ease: ease.outExpo }}
+          aria-hidden="true"
+        >
+          <IconChevronDown size={22} stroke={1.75} />
+        </motion.span>
       </button>
-      <div
-        id={`faq-${id}`}
-        className="audit-faq-a"
-        style={{ maxHeight: `${maxH}px` }}
-        ref={bodyRef}
-      >
-        <p>{a}</p>
-      </div>
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            id={`faq-${id}`}
+            className="dr-fa-faq__a"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: dur.base, ease: ease.outExpo }}
+          >
+            <p>{a}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -63,15 +69,18 @@ export default function AuditFAQ() {
   const [openIdx, setOpenIdx] = useState(0);
 
   return (
-    <section className="audit-faq">
-      <div className="wrap">
-        <header className="audit-section-head">
-          <h2 className="display audit-section-h2 r-up">
-            Everything you need to know.
-          </h2>
+    <section className="dr-fa-faq">
+      <div className="dr-container">
+        <header className="dr-fa-section-head">
+          <span className="dr-eyebrow">
+            <span className="dr-eyebrow__num">06</span>
+            <span className="dr-eyebrow__sep">/</span>
+            FAQ
+          </span>
+          <h2 className="dr-fa-section-h2">Everything you need to know.</h2>
         </header>
 
-        <div className="audit-faq-list r-up d1">
+        <div className="dr-fa-faq__list">
           {FAQ.map((f, i) => (
             <FAQItem
               key={f.q}
