@@ -32,11 +32,6 @@ export default function AuditTestimonials() {
     <section className="dr-fa-testimonials">
       <div className="dr-container">
         <header className="dr-fa-section-head">
-          <span className="dr-eyebrow">
-            <span className="dr-eyebrow__num">05</span>
-            <span className="dr-eyebrow__sep">/</span>
-            Results
-          </span>
           <h2 className="dr-fa-section-h2">Results speak louder.</h2>
         </header>
 

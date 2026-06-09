@@ -4,6 +4,7 @@ import {
 } from '@tabler/icons-react';
 import StaggerIn, { StaggerItem } from '../../motion/StaggerIn.jsx';
 import AIImagePlate from '../../motion/AIImagePlate.jsx';
+import SectionDivider from '../../components/layout/SectionDivider.jsx';
 
 const SERVICES = [
   {
@@ -71,13 +72,9 @@ export default function Services() {
   return (
     <section className="dr-services" id="services">
       <div className="dr-container">
+        <SectionDivider letter="A" label="What we build" />
         <div className="dr-services__head">
           <div>
-            <span className="dr-eyebrow">
-              <span className="dr-eyebrow__num">01</span>
-              <span className="dr-eyebrow__sep">/</span>
-              What We Build
-            </span>
             <h2 className="dr-services__h2">
               Every lever you need to scale a roofing business.
             </h2>

@@ -1,21 +1,7 @@
 @layer components {
 
-  /* ============================================================
-     Shared eyebrow (used across multiple sections)
-     ============================================================ */
-  .dr-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-family: var(--font-body);
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--ink-muted);
-  }
-  .dr-eyebrow__num { color: var(--accent); font-weight: 700; }
-  .dr-eyebrow__sep { color: var(--border-strong); }
+  /* dr-eyebrow retired in V2.1 editorial pivot. SectionDivider replaces it on
+     the home page; H2s carry the audit funnel sections directly. */
 
   /* ============================================================
      WordReveal text wrapping (used in Hero + FinalCTA)
@@ -494,7 +480,26 @@
     letter-spacing: -0.01em;
     color: var(--brand-charcoal);
   }
-  .dr-detail__p { font-family: var(--font-body); font-size: 17px; color: var(--ink-muted); max-width: 64ch; line-height: 1.55; }
+  .dr-detail__p {
+    font-family: var(--font-body);
+    font-size: 17px;
+    color: var(--brand-charcoal);
+    max-width: 64ch;
+    line-height: 1.6;
+  }
+  /* Editorial drop cap on the opening paragraph of each detail block. */
+  .dr-detail__p::first-letter {
+    font-family: var(--font-accent);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 4.5em;
+    line-height: 0.85;
+    float: left;
+    padding-right: 0.1em;
+    padding-top: 0.06em;
+    padding-bottom: 0.04em;
+    color: var(--brand-sapphire);
+  }
   .dr-detail__body { padding-left: clamp(0px, 8vw, 164px); }
   @media (max-width: 720px) { .dr-detail__body { padding-left: 0; } }
 
@@ -646,32 +651,36 @@
   }
 
   /* ============================================================
-     Stats marquee
+     Statement piece (one oversized number + Georgia annotation)
+     Replaces the 3-up hero-metric block per V2.1 editorial pivot.
      ============================================================ */
-  .dr-stats { padding-block: var(--space-9); background: var(--surface); }
-  .dr-stats__grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-6);
-    margin-top: var(--space-5);
+  .dr-statement {
+    padding-block: var(--space-10);
+    background: var(--surface);
   }
-  @media (max-width: 720px) { .dr-stats__grid { grid-template-columns: 1fr; } }
-  .dr-stat { display: flex; flex-direction: column; gap: var(--space-3); }
-  .dr-stat__value {
+  .dr-statement__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+    max-width: 1080px;
+  }
+  .dr-statement__figure {
     font-family: var(--font-display);
     font-weight: 900;
-    font-size: clamp(56px, 9vw, 132px);
-    line-height: 0.95;
+    font-size: clamp(72px, 14vw, 200px);
+    line-height: 0.9;
     letter-spacing: -0.04em;
     color: var(--brand-sapphire);
   }
-  .dr-stat__label {
-    font-family: var(--font-body);
-    font-size: 14px;
-    color: var(--ink-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    font-weight: 600;
+  .dr-statement__annotation {
+    font-family: var(--font-accent);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(18px, 2vw, 26px);
+    line-height: 1.45;
+    color: var(--brand-charcoal);
+    max-width: 50ch;
   }
 
   /* ============================================================

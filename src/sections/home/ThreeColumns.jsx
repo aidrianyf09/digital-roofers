@@ -1,4 +1,5 @@
 import StaggerIn, { StaggerItem } from '../../motion/StaggerIn.jsx';
+import SectionDivider from '../../components/layout/SectionDivider.jsx';
 
 const COL1 = [
   ['Google Ads', 60, 6],
@@ -26,13 +27,9 @@ export default function ThreeColumns() {
   return (
     <section className="dr-howit" id="howit">
       <div className="dr-container">
+        <SectionDivider letter="B" label="How it works" />
         <div className="dr-howit__head">
           <div>
-            <span className="dr-eyebrow">
-              <span className="dr-eyebrow__num">02</span>
-              <span className="dr-eyebrow__sep">/</span>
-              How It Works
-            </span>
             <h2 className="dr-howit__h2">
               Three columns. One page. The whole picture.
             </h2>

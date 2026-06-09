@@ -45,11 +45,6 @@ export default function AuditChecklist() {
     <section className="dr-fa-checklist">
       <div className="dr-container">
         <header className="dr-fa-section-head">
-          <span className="dr-eyebrow">
-            <span className="dr-eyebrow__num">04</span>
-            <span className="dr-eyebrow__sep">/</span>
-            What We Audit
-          </span>
           <h2 className="dr-fa-section-h2">
             Every angle. <span className="dr-fa-accent">Not just the ads.</span>
           </h2>

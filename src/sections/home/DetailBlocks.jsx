@@ -1,5 +1,7 @@
 import StaggerIn, { StaggerItem } from '../../motion/StaggerIn.jsx';
 import AIImagePlate from '../../motion/AIImagePlate.jsx';
+import SectionDivider from '../../components/layout/SectionDivider.jsx';
+import PullQuote from '../../components/ui/PullQuote.jsx';
 
 const SCORE_ROWS = [
   ['Google Ads Presence',  60, 6],
@@ -38,7 +40,7 @@ const MONTH_PLANS = [
   },
 ];
 
-function DetailHead({ num, eyebrow, h3, p }) {
+function DetailHead({ num, h3, p }) {
   return (
     <header className="dr-detail__head">
       <div className="dr-detail__rail">
@@ -46,7 +48,6 @@ function DetailHead({ num, eyebrow, h3, p }) {
         <span className="dr-detail__rail-of">/05</span>
       </div>
       <div className="dr-detail__intro">
-        <span className="dr-eyebrow">{eyebrow}</span>
         <h3 className="dr-detail__h3">{h3}</h3>
         <p className="dr-detail__p">{p}</p>
       </div>
@@ -58,12 +59,12 @@ export default function DetailBlocks() {
   return (
     <section className="dr-details" id="details">
       <div className="dr-container">
+        <SectionDivider letter="C" label="The audit" />
 
-        {/* SECTION 1 — YOUR SCORE */}
+        {/* 01 — YOUR SCORE */}
         <article className="dr-detail dr-detail--alt">
           <DetailHead
             num="01"
-            eyebrow="Section 1 · Your Score"
             h3="[Company Name] Digital Presence Audit."
             p="Scored on 5 pillars (1 to 10 each). One number tells you nothing. Five numbers tell you exactly where to push."
           />
@@ -90,11 +91,14 @@ export default function DetailBlocks() {
           </StaggerIn>
         </article>
 
-        {/* SECTION 2 — COMPETITOR COMPARISON */}
+        <PullQuote>
+          One number tells you nothing. Five numbers tell you exactly where to push.
+        </PullQuote>
+
+        {/* 02 — COMPETITOR COMPARISON */}
         <article className="dr-detail">
           <DetailHead
             num="02"
-            eyebrow="Section 2 · Competitor Comparison"
             h3="How you stack against the top 3 in your zip code."
             p="Simple table. Their scores vs yours. Where you are winning. Where you are losing. No interpretation theater. The numbers do the talking."
           />
@@ -116,11 +120,10 @@ export default function DetailBlocks() {
           </div>
         </article>
 
-        {/* SECTION 3 — GAP ANALYSIS */}
+        {/* 03 — GAP ANALYSIS */}
         <article className="dr-detail dr-detail--alt">
           <DetailHead
             num="03"
-            eyebrow="Section 3 · The Gap Analysis"
             h3="Here is what your top competitor is doing that you are not."
             p="Specific. Actionable. Real. The receipts on what's working for the guys eating your lunch, and the exact moves to take them on."
           />
@@ -137,11 +140,14 @@ export default function DetailBlocks() {
           </StaggerIn>
         </article>
 
-        {/* SECTION 4 — 90-DAY ROADMAP */}
+        <PullQuote>
+          No interpretation theater. The numbers do the talking.
+        </PullQuote>
+
+        {/* 04 — 90-DAY ROADMAP */}
         <article className="dr-detail">
           <DetailHead
             num="04"
-            eyebrow="Section 4 · The 90-Day Roadmap"
             h3="Three months. Three jobs. No detours."
             p="We don't believe in 12-month plans. The roofing market moves in storm seasons. Here's what the next 90 days look like."
           />
@@ -161,16 +167,19 @@ export default function DetailBlocks() {
           </StaggerIn>
         </article>
 
-        {/* SECTION 5 — CTA SUMMARY */}
+        <PullQuote>
+          Three months. Three jobs. No detours.
+        </PullQuote>
+
+        {/* 05 — CTA SUMMARY */}
         <article className="dr-detail dr-detail--alt">
           <DetailHead
             num="05"
-            eyebrow="Section 5 · The CTA"
             h3="We can execute this for you."
             p="The audit is free. The roadmap is yours either way. If you want us to run it, we'll talk numbers, not pitch decks."
           />
           <div className="dr-detail__body">
-            <AIImagePlate slot="proof/before-after" ratio="16 / 9" kenBurns={false} reveal />
+            <AIImagePlate ratio="16 / 9" kenBurns={false} reveal />
           </div>
         </article>
 

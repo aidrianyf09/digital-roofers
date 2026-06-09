@@ -72,11 +72,6 @@ export default function AuditFAQ() {
     <section className="dr-fa-faq">
       <div className="dr-container">
         <header className="dr-fa-section-head">
-          <span className="dr-eyebrow">
-            <span className="dr-eyebrow__num">06</span>
-            <span className="dr-eyebrow__sep">/</span>
-            FAQ
-          </span>
           <h2 className="dr-fa-section-h2">Everything you need to know.</h2>
         </header>
 

@@ -14,11 +14,6 @@ const AuditPlatformPicker = forwardRef(function AuditPlatformPicker({ selected, 
     <section ref={ref} id="picker" className="dr-fa-picker">
       <div className="dr-container">
         <header className="dr-fa-section-head is-centered">
-          <span className="dr-eyebrow">
-            <span className="dr-eyebrow__num">02</span>
-            <span className="dr-eyebrow__sep">/</span>
-            Pick Your Channel
-          </span>
           <h2 className="dr-fa-section-h2">What should we audit?</h2>
           <p className="dr-fa-section-sub">
             Pick one. We tailor the 15-minute review to the channel you actually run.

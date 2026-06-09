@@ -33,11 +33,6 @@ const AuditBooking = forwardRef(function AuditBooking({ selected, onChangeClick 
     <section ref={ref} id="booking" className="dr-fa-booking">
       <div className="dr-container">
         <header className="dr-fa-section-head is-centered">
-          <span className="dr-eyebrow">
-            <span className="dr-eyebrow__num">03</span>
-            <span className="dr-eyebrow__sep">/</span>
-            Book Your Free Audit
-          </span>
           <h2 className="dr-fa-section-h2">
             15 minutes. Free. <span className="dr-fa-accent">No obligation.</span>
           </h2>

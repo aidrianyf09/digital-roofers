@@ -18,11 +18,6 @@ export default function AuditSteps() {
     <section className="dr-fa-steps">
       <div className="dr-container">
         <header className="dr-fa-section-head">
-          <span className="dr-eyebrow">
-            <span className="dr-eyebrow__num">01</span>
-            <span className="dr-eyebrow__sep">/</span>
-            What To Expect
-          </span>
           <h2 className="dr-fa-section-h2">
             A real audit. <span className="dr-fa-accent">Not a sales pitch.</span>
           </h2>
