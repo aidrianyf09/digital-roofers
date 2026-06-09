@@ -4,4 +4,5 @@
 @import url('./reset.css');
 @import url('./tokens.css');
 @import url('./base.css');
+@import url('./components.css');
 @import url('./utilities.css');

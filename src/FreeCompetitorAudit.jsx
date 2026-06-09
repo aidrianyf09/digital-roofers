@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './FreeCompetitorAudit.css';
+import Nav from './components/layout/Nav.jsx';
+import Footer from './components/layout/Footer.jsx';
 
 const EMAIL = 'office@strongbrandsunited.com';
 const ESTIMATOR_PATH = '/revenue-estimator';
@@ -14,10 +16,6 @@ const HERO_SERVICES = [
 ];
 
 export default function FreeCompetitorAudit() {
-  const navRef = useRef(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSvc, setActiveSvc] = useState(0);
   const [svcHover, setSvcHover] = useState(false);
 
@@ -28,17 +26,6 @@ export default function FreeCompetitorAudit() {
     }, 2200);
     return () => clearInterval(id);
   }, [svcHover]);
-
-  useEffect(() => {
-    const raf = requestAnimationFrame(() => setIsLoaded(true));
-    const onScroll = () => setIsScrolled(window.scrollY > 80);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener('scroll', onScroll);
-    };
-  }, []);
 
   useEffect(() => {
     const io = new IntersectionObserver(
@@ -58,67 +45,9 @@ export default function FreeCompetitorAudit() {
     return () => io.disconnect();
   }, []);
 
-  const closeMobile = () => setMobileOpen(false);
-
-  const navClass = [
-    'nav',
-    isLoaded && 'is-loaded',
-    isScrolled && 'is-scrolled',
-  ]
-    .filter(Boolean)
-    .join(' ');
-
   return (
     <>
-      {/* =================== NAV =================== */}
-      <nav className={navClass} id="nav" ref={navRef}>
-        <div className="wrap nav-inner">
-          <a href="#" className="nav-wordmark">
-            DIGITAL ROOFERS<span>/</span>SBU
-          </a>
-          <div className="nav-desktop nav-links">
-            <a className="nav-link" href="#services">Services</a>
-            <Link className="nav-link" to="/free-audit">Free Audit</Link>
-            <a className="nav-link" href="#footer">Contact</a>
-            <Link
-              className="cta cta-sm"
-              to={ESTIMATOR_PATH}
-              style={{ marginLeft: 8 }}
-            >
-              <span className="cta-shadow"></span>
-              <span className="cta-btn">
-                Let's talk roofs <span className="arrow">→</span>
-              </span>
-            </Link>
-          </div>
-          <button
-            className="nav-burger"
-            id="navBurger"
-            aria-label="Menu"
-            onClick={() => setMobileOpen((v) => !v)}
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-        </div>
-        <div className={`nav-mobile${mobileOpen ? ' is-open' : ''}`} id="navMobile">
-          <a className="nav-link" href="#services" onClick={closeMobile}>Services</a>
-          <Link className="nav-link" to="/free-audit" onClick={closeMobile}>Free Audit</Link>
-          <a className="nav-link" href="#footer" onClick={closeMobile}>Contact</a>
-          <div style={{ height: 8 }}></div>
-          <Link
-            className="cta"
-            to={ESTIMATOR_PATH}
-            onClick={closeMobile}
-          >
-            <span className="cta-shadow"></span>
-            <span className="cta-btn">
-              Let's talk roofs <span className="arrow">→</span>
-            </span>
-          </Link>
-        </div>
-      </nav>
+      <Nav />
 
       {/* =================== HERO =================== */}
       <section className="page-hero">
@@ -638,53 +567,7 @@ export default function FreeCompetitorAudit() {
         </div>
       </section>
 
-      {/* =================== FOOTER =================== */}
-      <footer className="footer" id="footer">
-        <div className="wrap">
-          <div className="footer-cols">
-            <div className="footer-col">
-              <div className="footer-wordmark">
-                Digital<br />Roofers<br /><span>/</span>by SBU
-              </div>
-              <p className="footer-tag">Digital growth for Florida roofers.</p>
-            </div>
-            <div className="footer-col">
-              <h4 className="footer-h">Get in Touch</h4>
-              <p style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontWeight: 700,
-                fontSize: 13,
-                letterSpacing: '0.06em',
-                textTransform: 'uppercase',
-              }}>
-                217 S Cedar Ave, Unit C<br />Tampa, FL 33606
-              </p>
-              <p style={{
-                fontFamily: "'Inter', sans-serif",
-                fontWeight: 700,
-                fontSize: 15,
-                marginTop: 14,
-              }}>
-                <a href="tel:+18139579715">+1 (813) 957-9715</a><br />
-                <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
-              </p>
-            </div>
-            <div className="footer-col">
-              <h4 className="footer-h">Quick Links</h4>
-              <ul className="quick-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><Link to="/free-audit">Free Audit</Link></li>
-                <li><a href={`mailto:${EMAIL}`}>Email</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            <div>© 2026 Digital Roofers by SBU · Built in Tampa, FL</div>
-            <div>Free Competitor Audit · One Page · No Strings</div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 }
