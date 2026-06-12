@@ -274,6 +274,18 @@
     .dr-svc-card:hover .dr-svc-card__icon { color: var(--brand-teal); }
     .dr-svc-card:hover .dr-svc-card__arrow { color: var(--brand-sapphire); transform: translate(3px, -3px); }
   }
+  .dr-svc-card__link {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    color: inherit;
+    text-decoration: none;
+  }
+  .dr-svc-card__link:focus-visible {
+    outline: 2px solid var(--brand-sapphire);
+    outline-offset: -2px;
+    border-radius: var(--radius-lg);
+  }
   .dr-svc-card__image { width: 100%; }
   .dr-svc-card__image .dr-image-plate { border-radius: 0; box-shadow: none; }
   .dr-svc-card__body { padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-3); flex: 1; }

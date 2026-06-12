@@ -4,6 +4,8 @@ import FreeCompetitorAudit from './FreeCompetitorAudit.jsx';
 import RevenueEstimator from './RevenueEstimator.jsx';
 import FreeAudit from './FreeAudit.jsx';
 import CityPage from './pages/CityPage.jsx';
+import ServicesHub from './pages/ServicesHub.jsx';
+import ServicePage from './pages/ServicePage.jsx';
 import PageTransition from './components/layout/PageTransition.jsx';
 import { useLenis } from './hooks/useLenis.js';
 import { AdminAuthProvider } from './admin/AdminAuth.jsx';
@@ -26,6 +28,10 @@ function AnimatedRoutes() {
         <Route path="/" element={<PageTransition><FreeCompetitorAudit /></PageTransition>} />
         <Route path="/revenue-estimator" element={<PageTransition><RevenueEstimator /></PageTransition>} />
         <Route path="/free-audit" element={<PageTransition><FreeAudit /></PageTransition>} />
+
+        {/* Services */}
+        <Route path="/services" element={<PageTransition><ServicesHub /></PageTransition>} />
+        <Route path="/services/:slug" element={<PageTransition><ServicePage /></PageTransition>} />
 
         {/* Admin */}
         <Route path="/admin/login" element={<AdminLogin />} />

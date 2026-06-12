@@ -1,72 +1,58 @@
-import {
-  IconSearch, IconBrandMeta, IconUsersGroup, IconDeviceLaptop,
-  IconCode, IconRobot, IconSparkles, IconArrowUpRight,
-} from '@tabler/icons-react';
+import { Link } from 'react-router-dom';
+import { IconArrowUpRight } from '@tabler/icons-react';
 import StaggerIn, { StaggerItem } from '../../motion/StaggerIn.jsx';
 import AIImagePlate from '../../motion/AIImagePlate.jsx';
 import SectionDivider from '../../components/layout/SectionDivider.jsx';
+import { SERVICES } from '../../data/services.js';
+import { SERVICE_ICONS } from '../service/icons.js';
 
-const SERVICES = [
-  {
-    num: '01',
-    tag: 'Paid Search',
-    name: 'Google Ads',
-    desc: 'Capture homeowners the second they search "roof repair near me." Built for cost-per-lead, not vanity clicks.',
-    Icon: IconSearch,
-    kpi: 'Built for cost per lead',
-    span: 'wide',
-    image: true,
+/**
+ * Per-card KPI copy + visual "span" (wide cards anchor the rhythm of the grid).
+ * Keyed by service slug so the data model stays pure structural and the home
+ * grid keeps its own visual cadence.
+ */
+const CARD_META = {
+  'google-ads': {
+    kpi: 'Built for cost per lead', span: 'wide', image: true,
+    desc: 'Capture homeowners the second they search "roof repair near me." Built for cost per lead, not vanity clicks.',
   },
-  {
-    num: '02',
-    tag: 'Paid Social',
-    name: 'Meta Ads',
-    desc: 'Storm-season campaigns, retargeting funnels, and creative that turns scrollers into booked inspections.',
-    Icon: IconBrandMeta,
+  'meta-ads': {
     kpi: 'Storm-season ready',
+    desc: 'Storm-season campaigns, retargeting funnels, and creative that turns scrollers into booked inspections.',
   },
-  {
-    num: '03',
-    tag: 'Organic',
-    name: 'Social Media Management',
-    desc: 'Daily presence that builds trust in your service area. Job-site content, reviews, authority, handled.',
-    Icon: IconUsersGroup,
+  'social-media-management': {
     kpi: 'Weekly cadence',
+    desc: 'Daily presence that builds trust in your service area. Job-site content, reviews, authority, handled.',
   },
-  {
-    num: '04',
-    tag: 'Design',
-    name: 'Web Design',
-    desc: 'Roofing sites that look like the trade and convert like a machine. Fast on phones in driveways.',
-    Icon: IconDeviceLaptop,
+  'web-design': {
     kpi: 'Mobile-first build',
+    desc: 'Roofing sites that look like the trade and convert like a machine. Fast on phones in driveways.',
   },
-  {
-    num: '05',
-    tag: 'Build',
-    name: 'Web Development',
-    desc: 'Custom builds, lead-routing, CRM integrations, and tracking that actually works.',
-    Icon: IconCode,
+  'web-development': {
     kpi: 'End-to-end tracked',
+    desc: 'Custom builds, lead-routing, CRM integrations, and tracking that actually works.',
   },
-  {
-    num: '06',
-    tag: 'AI',
-    name: 'AI & Automation',
+  'ai-automation': {
+    kpi: 'Instant lead capture', span: 'wide',
     desc: 'Instant lead response. AI-qualified inbound calls. Automated follow-up. No lead ever cools off.',
-    Icon: IconRobot,
-    kpi: 'Instant lead capture',
-    span: 'wide',
   },
-  {
-    num: '07',
-    tag: 'And More',
-    name: 'SEO, Email, Branding, Analytics',
-    desc: 'If it scales roofers, we build it.',
-    Icon: IconSparkles,
-    kpi: 'Strategy-first',
+  'seo': {
+    kpi: 'Compounds over time',
+    desc: 'Rank for "roofer near me" and the long-tail searches that close. Local SEO built for service areas.',
   },
-];
+  'email': {
+    kpi: 'Nurture, not noise',
+    desc: 'Sequences that keep you in the inbox without being the company that spams. The "not now" lead becomes the yes.',
+  },
+  'branding': {
+    kpi: 'Trust before the call',
+    desc: 'Identity, voice, and visuals that signal trust before you say a word. Premium positioning, not template look.',
+  },
+  'analytics': {
+    kpi: 'What every dollar bought',
+    desc: 'Owner-friendly dashboards. Cost per booked inspection. The one number that tells you where to push next.',
+  },
+};
 
 export default function Services() {
   return (
@@ -85,40 +71,48 @@ export default function Services() {
         </div>
 
         <StaggerIn className="dr-services__grid" staggerChildren={0.06}>
-          {SERVICES.map((s) => (
-            <StaggerItem
-              key={s.num}
-              as="article"
-              className={`dr-svc-card ${s.span === 'wide' ? 'is-wide' : ''}`}
-            >
-              {s.image && (
-                <div className="dr-svc-card__image">
-                  <AIImagePlate
-                    slot="services/google-ads"
-                    src="/imagery/services/google-ads.webp"
-                    alt="Strategist reviewing a Google Ads dashboard for a Florida roofing campaign."
-                    ratio="16 / 9"
-                    kenBurns={false}
-                    reveal={false}
-                  />
-                </div>
-              )}
-              <div className="dr-svc-card__body">
-                <div className="dr-svc-card__head">
-                  <span className="dr-svc-card__num">
-                    {s.num} <span className="dr-svc-card__sep">·</span> {s.tag}
-                  </span>
-                  <s.Icon size={28} stroke={1.75} className="dr-svc-card__icon" aria-hidden="true" />
-                </div>
-                <h3 className="dr-svc-card__name">{s.name}</h3>
-                <p className="dr-svc-card__desc">{s.desc}</p>
-                <div className="dr-svc-card__foot">
-                  <span className="dr-svc-card__kpi">{s.kpi}</span>
-                  <IconArrowUpRight size={20} stroke={1.75} className="dr-svc-card__arrow" aria-hidden="true" />
-                </div>
-              </div>
-            </StaggerItem>
-          ))}
+          {SERVICES.map((s) => {
+            const meta = CARD_META[s.slug] || {};
+            const Icon = SERVICE_ICONS[s.iconKey];
+            return (
+              <StaggerItem
+                key={s.slug}
+                as="article"
+                className={`dr-svc-card ${meta.span === 'wide' ? 'is-wide' : ''}`}
+              >
+                <Link to={`/services/${s.slug}`} className="dr-svc-card__link" aria-label={`Learn more about ${s.name}`}>
+                  {meta.image && (
+                    <div className="dr-svc-card__image">
+                      <AIImagePlate
+                        slot={`services/${s.slug}`}
+                        src={`/imagery/services/${s.slug}.webp`}
+                        alt={`${s.name} for Florida roofing companies.`}
+                        ratio="16 / 9"
+                        kenBurns={false}
+                        reveal={false}
+                      />
+                    </div>
+                  )}
+                  <div className="dr-svc-card__body">
+                    <div className="dr-svc-card__head">
+                      <span className="dr-svc-card__num">
+                        {s.num} <span className="dr-svc-card__sep">·</span> {s.tag}
+                      </span>
+                      {Icon && (
+                        <Icon size={28} stroke={1.75} className="dr-svc-card__icon" aria-hidden="true" />
+                      )}
+                    </div>
+                    <h3 className="dr-svc-card__name">{s.name}</h3>
+                    <p className="dr-svc-card__desc">{meta.desc}</p>
+                    <div className="dr-svc-card__foot">
+                      <span className="dr-svc-card__kpi">{meta.kpi}</span>
+                      <IconArrowUpRight size={20} stroke={1.75} className="dr-svc-card__arrow" aria-hidden="true" />
+                    </div>
+                  </div>
+                </Link>
+              </StaggerItem>
+            );
+          })}
         </StaggerIn>
       </div>
     </section>
